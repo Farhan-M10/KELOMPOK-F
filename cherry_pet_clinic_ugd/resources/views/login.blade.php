@@ -101,6 +101,33 @@
             color: #757575;
         }
 
+        /* Alert Messages */
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background: #FFEBEE;
+            border: 1px solid #E31E24;
+            color: #E31E24;
+        }
+
+        .alert-success {
+            background: #E8F5E9;
+            border: 1px solid #1FBD88;
+            color: #1FBD88;
+        }
+
+        .alert strong {
+            font-weight: 600;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
@@ -108,7 +135,7 @@
         label {
             display: block;
             font-size: 13px;
-            color: #424242;
+            color: #1A1A1A;
             margin-bottom: 7px;
             font-weight: 500;
         }
@@ -126,8 +153,13 @@
             border-radius: 6px;
             font-size: 13px;
             transition: all 0.3s;
-            background: white;
-            color: #424242;
+            background: #F5F7FA;
+            color: #1A1A1A;
+        }
+
+        input.error {
+            border-color: #E31E24;
+            background: #FFF5F5;
         }
 
         /* Hapus icon bawaan browser untuk password */
@@ -150,7 +182,7 @@
             outline: none;
             border-color: #0066B3;
             background: white;
-            box-shadow: 0 0 0 3px rgba(0, 102, 179, 0.08);
+            box-shadow: 0 0 0 3px rgba(0, 102, 179, 0.1);
         }
 
         input::placeholder {
@@ -214,7 +246,7 @@
             margin: 0;
             cursor: pointer;
             font-weight: 400;
-            color: #616161;
+            color: #1A1A1A;
             font-size: 12px;
         }
 
@@ -246,7 +278,7 @@
         .login-button:hover {
             background: #FF4444;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(227, 30, 36, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4);
         }
 
         .login-button:active {
@@ -280,14 +312,41 @@
                 <p>Masuk ke sistem untuk mengelola dashboard</p>
             </div>
 
+            {{-- Alert Error --}}
+            @if($errors->any())
+                <div class="alert alert-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>{{ $errors->first() }}</span>
+                </div>
+            @endif
+
+            {{-- Alert Success --}}
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+            @endif
+
             <form action="{{ route('login.submit') }}" method="POST">
+                @csrf
+                
                 <div class="form-group">
                     <label for="email">Email<span>*</span></label>
                     <input 
                         type="email" 
                         id="email" 
                         name="email" 
-                        placeholder="Admin@cherrypetclinic.com" 
+                        placeholder="Admin@cherrypetclinic.com"
+                        value="{{ old('email') }}"
+                        class="{{ $errors->has('email') ? 'error' : '' }}"
                         required
                     >
                 </div>
@@ -299,7 +358,8 @@
                             type="password" 
                             id="password" 
                             name="password" 
-                            placeholder="••••••••" 
+                            placeholder="••••••••"
+                            class="{{ $errors->has('password') ? 'error' : '' }}"
                             required
                         >
                         <span class="toggle-password" onclick="togglePassword()">
