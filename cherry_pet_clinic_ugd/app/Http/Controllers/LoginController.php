@@ -15,9 +15,9 @@ class LoginController extends Controller
     public function showLogin()
     {
         // Jika sudah login, redirect ke dashboard
-        if (Auth::check()) {
-            return redirect()->route('dashboard');
-        }
+        #if (Auth::check()) {
+         #   return redirect()->route('dashboard');
+       # }
         
         return view('login');
     }
