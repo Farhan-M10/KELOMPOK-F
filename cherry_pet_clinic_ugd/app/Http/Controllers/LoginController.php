@@ -26,12 +26,12 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
+
             // Redirect berdasarkan role
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, Admin!');
             }
-            
+
             return redirect()->route('staff.dashboard')->with('success', 'Selamat datang, Staff!');
         }
 
@@ -46,7 +46,7 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect()->route('login')->with('success', 'Berhasil logout.');
     }
 }
