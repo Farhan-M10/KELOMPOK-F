@@ -58,13 +58,13 @@ class SupplierController extends Controller
     public function show(Supplier $supplier)
     {
         $supplier->load(['jenisBarang.kategori']);
-        return view('suppliers.show', compact('supplier'));
+        return view('admin.suppliers.show', compact('supplier'));
     }
 
     public function edit(Supplier $supplier)
     {
         $jenisBarangs = JenisBarang::with('kategori')->get();
-        return view('suppliers.edit', compact('supplier', 'jenisBarangs'));
+        return view('admin.suppliers.edit', compact('supplier', 'jenisBarangs'));
     }
 
     public function update(Request $request, Supplier $supplier)
@@ -80,7 +80,7 @@ class SupplierController extends Controller
 
         $supplier->update($request->all());
 
-        return redirect()->route('suppliers.index')
+        return redirect()->route('admin.suppliers.index')
             ->with('success', 'Supplier berhasil diupdate');
     }
 

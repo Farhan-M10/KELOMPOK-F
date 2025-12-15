@@ -62,7 +62,7 @@
                     @endforeach
                 </select>
                 <button class="px-6 py-2.5 bg-blue-600 text-white rounded-lg">Filter</button>
-                <a href="{{ route('suppliers.create') }}" class="px-6 py-2.5 bg-red-500 text-white rounded-lg">+ Tambah</a>
+                <a href="{{ route('admin.suppliers.create') }}" class="px-6 py-2.5 bg-red-500 text-white rounded-lg">+ Tambah</a>
             </form>
         </div>
 
@@ -122,9 +122,9 @@
                 </div>
 
                 <div class="flex gap-2 pt-3 border-t">
-                    <a href="{{ route('suppliers.show', $s) }}" class="flex-1 bg-blue-600 text-white text-center px-3 py-2 rounded-lg text-sm">Detail</a>
-                    <a href="{{ route('suppliers.edit', $s) }}" class="flex-1 bg-green-600 text-white text-center px-3 py-2 rounded-lg text-sm">Edit</a>
-                    <form action="{{ route('suppliers.destroy', $s) }}" method="POST" onsubmit="return confirm('Hapus?')" class="flex-1">
+                    <a href="{{ route('admin.suppliers.show', $s) }}" class="flex-1 bg-blue-600 text-white text-center px-3 py-2 rounded-lg text-sm">Detail</a>
+                    <a href="{{ route('admin.suppliers.edit', $s) }}" class="flex-1 bg-green-600 text-white text-center px-3 py-2 rounded-lg text-sm">Edit</a>
+                    <form action="{{ route('admin.suppliers.destroy', $s) }}" method="POST" onsubmit="return confirm('Hapus?')" class="flex-1">
                         @csrf
                         @method('DELETE')
                         <button class="w-full bg-red-600 text-white px-3 py-2 rounded-lg text-sm">Hapus</button>
@@ -142,3 +142,4 @@
         <div class="mt-6">{{ $suppliers->links() }}</div>
 @endsection
 
+@extends('admin.layouts.app')

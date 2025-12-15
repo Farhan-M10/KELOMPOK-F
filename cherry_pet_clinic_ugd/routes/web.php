@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SupplierController;
 
 // Route Login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -10,10 +11,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route Dashboard (dilindungi middleware auth)
 Route::middleware(['auth'])->group(function () {
-    
+
     // Dashboard Admin
     Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
+        return view('admin.layouts.app');
     })->middleware('role:admin')->name('admin.dashboard');
 
     // Dashboard Staff
@@ -33,4 +34,16 @@ Route::middleware(['auth'])->group(function () {
 // Redirect root ke login
 Route::get('/', function () {
     return redirect()->route('login');
+});
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/suppliers', [SupplierController::class, 'index'])
+            ->name('admin.suppliers.index');
+
+    });
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('suppliers', SupplierController::class);
 });
