@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\JenisBarangController;
+use App\Http\Controllers\KategoriController;
+
+
 
 // Route Login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -47,3 +51,22 @@ Route::middleware(['auth', 'role:admin'])
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('suppliers', SupplierController::class);
 });
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('admin.layouts.app');
+    })->name('dashboard');
+
+    // Kategori
+    Route::resource('kategori', KategoriController::class);
+
+    // Jenis Barang
+    Route::resource('jenis-barang', JenisBarangController::class);
+});
+
+Route::get('/kategori', function () {
+    return redirect()->route('admin.kategori.index');
+    });
