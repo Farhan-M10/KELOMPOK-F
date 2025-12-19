@@ -44,14 +44,12 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/suppliers', [SupplierController::class, 'index'])
-            ->name('admin.suppliers.index');
-
-    });
+});
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('suppliers', SupplierController::class);
 });
-
+Route::get('/suppliers', [SupplierController::class, 'index'])
+            ->name('admin.suppliers.index');
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -64,9 +62,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('kategori', KategoriController::class);
 
     // Jenis Barang
-    Route::resource('jenis-barang', JenisBarangController::class);
+    Route::resource('jenisbarang', JenisBarangController::class);
 });
 
 Route::get('/kategori', function () {
     return redirect()->route('admin.kategori.index');
     });
+Route::get('/jenis-barang', function () {
+    return redirect()->route('admin.jenis_barang.index');
+    });
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('kategori', KategoriController::class);
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('jenis_barang', JenisBarangController::class);
+});

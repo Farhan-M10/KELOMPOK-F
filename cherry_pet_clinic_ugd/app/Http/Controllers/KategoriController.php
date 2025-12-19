@@ -21,7 +21,7 @@ public function index(Request $request)
         })
         ->paginate(10);
 
-    return view('admin.jenis-barang.index', compact(
+    return view('admin.jenis_barang.index', compact(
         'jenisBarangs',
         'kategoris',
         'kategori_id'

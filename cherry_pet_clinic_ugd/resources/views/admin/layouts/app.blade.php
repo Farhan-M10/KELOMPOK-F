@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     @stack('styles')
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100">
     <!-- Mobile Menu Toggle -->
     <button class="menu-toggle" id="menuToggle">
         <span></span>
@@ -28,33 +28,33 @@
             </div>
             <div class="logo-text">
                 <h3>Cherry Pet Clinic</h3>
-                <p>UGD 24 Jam - Purwokerto</p>
+                <p>UGD 24 Jam - Ancolanbuluh Purwokerto</p>
             </div>
         </div>
 
         <div class="menu">
-            <a href="{{ route('admin.suppliers.index') }}" class="menu-item {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
+            <a href="" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
                 <span>Beranda</span>
             </a>
 
-            <a href="#" class="menu-item">
+            <a href="" class="menu-item {{ request()->routeIs('stok.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                 </svg>
                 <span>Stok Barang</span>
             </a>
 
-            <a href="#" class="menu-item">
+            <a href="" class="menu-item {{ request()->routeIs('pengadaan.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
                 <span>Pengadaan Stok</span>
             </a>
 
-            <a href="#" class="menu-item">
+            <a href="" class="menu-item {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
@@ -65,10 +65,10 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
-                <span>Supplier</span>
+                <span>Pemasok</span>
             </a>
 
-                <a href="{{ route('admin.kategori.index') }}" class="menu-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.kategori.index') }}" class="menu-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                 </svg>
@@ -79,8 +79,8 @@
 
     <!-- Header -->
     <div class="header">
-        <div class="header-title">
-            <h1>@yield('page-title', 'Dashboard')</h1>
+        <div class="header-left">
+            <h1>@yield('header-title', 'Sistem Manajemen Inventori Klinik Hewan')</h1>
         </div>
 
         <div class="header-actions">
@@ -88,14 +88,14 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
-                <span class="notification-badge"></span>
+                <span class="notification-badge">1</span>
             </div>
 
             <div class="user-profile">
-                <div class="user-avatar">A</div>
+                <div class="user-avatar">{{ substr(Auth::user()->name ?? 'Admin', 0, 1) }}</div>
                 <div class="user-info">
-                    <div class="user-name">Admin</div>
-                    <div class="user-role">Administrator</div>
+                    <div class="user-name">{{ Auth::user()->name ?? 'Admin Name' }}</div>
+                    <div class="user-role">{{ Auth::user()->role ?? 'Administrator' }}</div>
                 </div>
             </div>
         </div>
@@ -103,10 +103,26 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        @yield('content')
+        <div class="page-header">
+            <h2>@yield('page-title', 'Beranda')</h2>
+        </div>
+
+        <div class="content-area">
+            @yield('content')
+        </div>
     </div>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
         .menu-toggle {
             display: none;
             position: fixed;
@@ -138,113 +154,112 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 240px;
+            width: 165px;
             height: 100vh;
-            background: linear-gradient(180deg, #0066B3 0%, #003D7A 100%);
-            padding: 20px 0;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(180deg, #0066B3 0%, #004080 100%);
+            padding: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             z-index: 100;
             overflow-y: auto;
         }
 
         .logo-section {
             text-align: center;
-            padding: 0 15px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            margin-bottom: 15px;
+            padding: 20px 10px;
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .logo-circle {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .logo-circle svg {
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
         }
 
         .logo-text h3 {
             color: white;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 600;
             margin-bottom: 3px;
+            line-height: 1.2;
         }
 
         .logo-text p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 8px;
+            line-height: 1.3;
         }
 
         .menu {
-            padding: 0 12px;
+            padding: 15px 8px;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            margin-bottom: 4px;
-            color: rgba(255, 255, 255, 0.85);
+            gap: 10px;
+            padding: 10px 12px;
+            margin-bottom: 3px;
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
+            border-radius: 6px;
+            transition: all 0.2s;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             color: white;
-            transform: translateX(3px);
         }
 
         .menu-item.active {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .menu-item svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             flex-shrink: 0;
         }
 
         .header {
             position: fixed;
-            left: 240px;
+            left: 165px;
             right: 0;
             top: 0;
             height: 60px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            background: #0066B3;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 25px;
             z-index: 50;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .header-title h1 {
-            font-size: 16px;
-            color: #1A1A1A;
+        .header-left h1 {
+            font-size: 15px;
+            color: white;
             font-weight: 600;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .notification-icon {
@@ -260,24 +275,31 @@
         }
 
         .notification-icon:hover {
-            background: #F5F7FA;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .notification-icon svg {
-            width: 20px;
-            height: 20px;
-            color: #424242;
+            width: 22px;
+            height: 22px;
+            color: white;
         }
 
         .notification-badge {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
+            top: 6px;
+            right: 6px;
+            min-width: 18px;
+            height: 18px;
             background: #E31E24;
-            border-radius: 50%;
-            border: 2px solid white;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 0 5px;
+            border: 2px solid #0066B3;
         }
 
         .user-profile {
@@ -285,13 +307,13 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            padding: 6px 10px;
-            border-radius: 25px;
+            padding: 5px 12px;
+            border-radius: 20px;
             transition: background 0.3s;
         }
 
         .user-profile:hover {
-            background: #F5F7FA;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .user-avatar {
@@ -304,7 +326,7 @@
             justify-content: center;
             color: white;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .user-info {
@@ -315,20 +337,35 @@
         .user-name {
             font-size: 12px;
             font-weight: 600;
-            color: #1A1A1A;
+            color: white;
         }
 
         .user-role {
             font-size: 10px;
-            color: #757575;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .main-content {
-            margin-left: 240px;
+            margin-left: 165px;
             margin-top: 60px;
-            padding: 25px;
+            padding: 0;
             min-height: calc(100vh - 60px);
-            max-width: 1400px;
+        }
+
+        .page-header {
+            background: white;
+            padding: 20px 25px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .page-header h2 {
+            font-size: 18px;
+            color: #1A1A1A;
+            font-weight: 600;
+        }
+
+        .content-area {
+            padding: 25px;
         }
 
         @media (max-width: 768px) {
@@ -350,9 +387,12 @@
                 padding: 0 15px 0 65px;
             }
 
+            .header-left h1 {
+                font-size: 13px;
+            }
+
             .main-content {
                 margin-left: 0;
-                padding: 15px;
             }
 
             .user-info {

@@ -142,4 +142,3 @@
         <div class="mt-6">{{ $suppliers->links() }}</div>
 @endsection
 
-@extends('admin.layouts.app')
