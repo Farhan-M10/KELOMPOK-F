@@ -15,11 +15,6 @@
     <!-- Header Card -->
     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-xl p-6 border-b">
         <div class="flex items-center gap-4">
-            <div class="w-16 h-16 bg-white rounded-lg shadow flex items-center justify-center">
-                <span class="text-3xl">
-                    {{ $supplier->jenisBarang->icon ?? '📦' }}
-                </span>
-            </div>
             <div>
                 <div class="flex items-center gap-2 mb-1">
                     <span class="text-xs font-semibold text-gray-500">

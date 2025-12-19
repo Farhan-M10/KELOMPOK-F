@@ -28,7 +28,7 @@
             </div>
             <div class="logo-text">
                 <h3>Cherry Pet Clinic</h3>
-                <p>UGD 24 Jam - Ancolanbuluh Purwokerto</p>
+                <p>UGD 24 Jam - Arcawinangun Purwokerto</p>
             </div>
         </div>
 

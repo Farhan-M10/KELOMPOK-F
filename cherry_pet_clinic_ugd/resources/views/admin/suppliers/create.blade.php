@@ -14,7 +14,7 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-sm p-6">
-        <form action="{{ route('admin.suppliers.store') }}" method="POST">
+        <form action="{{ route('admin.suppliers.store') }}" method="POST" id="supplierForm">
             @csrf
 
             {{-- Nama Supplier --}}
@@ -55,7 +55,7 @@
                         <optgroup label="{{ $kat }}">
                             @foreach($items as $j)
                                 <option value="{{ $j->id }}" @selected(old('jenis_barang_id') == $j->id)>
-                                    {{ $j->icon }} {{ $j->nama_jenis }}
+                                    {{ $j->nama_jenis }}
                                 </option>
                             @endforeach
                         </optgroup>
@@ -109,12 +109,13 @@
 
             {{-- Button --}}
             <div class="flex gap-3">
-                <button type="submit"
-                    class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg">
-                    Simpan
+                <button type="submit" id="submitBtn"
+                    class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    <span id="btnText">Simpan</span>
+                    <span id="btnLoading" class="hidden">Menyimpan...</span>
                 </button>
                 <a href="{{ route('admin.suppliers.index') }}"
-                    class="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg text-center">
+                    class="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg text-center hover:bg-gray-300">
                     Batal
                 </a>
             </div>
@@ -122,4 +123,26 @@
         </form>
     </div>
 </div>
+
+<script>
+    // Prevent double submission
+    const form = document.getElementById('supplierForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnLoading = document.getElementById('btnLoading');
+
+    let isSubmitting = false;
+
+    form.addEventListener('submit', function(e) {
+        if (isSubmitting) {
+            e.preventDefault();
+            return false;
+        }
+
+        isSubmitting = true;
+        submitBtn.disabled = true;
+        btnText.classList.add('hidden');
+        btnLoading.classList.remove('hidden');
+    });
+</script>
 @endsection
