@@ -51,7 +51,7 @@ class SupplierController extends Controller
 
         Supplier::create($request->all());
 
-        return redirect()->route('suppliers.index')
+        return redirect()->route('admin.suppliers.index')
             ->with('success', 'Supplier berhasil ditambahkan');
     }
 
@@ -87,7 +87,7 @@ class SupplierController extends Controller
     public function destroy(Supplier $supplier)
     {
         $supplier->delete();
-        return redirect()->route('suppliers.index')
+        return redirect()->route('admin.suppliers.index')
             ->with('success', 'Supplier berhasil dihapus');
     }
 }
