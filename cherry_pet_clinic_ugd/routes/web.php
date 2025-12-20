@@ -1,80 +1,81 @@
 <?php
+// File: routes/web.php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\BarangController;
 
-
-
-// Route Login
+// ==========================================
+// ROUTE LOGIN
+// ==========================================
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route Dashboard (dilindungi middleware auth)
+// ==========================================
+// ROUTE ROOT
+// ==========================================
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+// ==========================================
+// ROUTE AUTHENTICATED
+// ==========================================
 Route::middleware(['auth'])->group(function () {
-
-    // Dashboard Admin
-    Route::get('/admin/dashboard', function () {
-        return view('admin.layouts.app');
-    })->middleware('role:admin')->name('admin.dashboard');
-
-    // Dashboard Staff
-    Route::get('/staff/dashboard', function () {
-        return view('staff.dashboard');
-    })->middleware('role:staff')->name('staff.dashboard');
-
-    // Route umum untuk dashboard
+    
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
         return redirect()->route('staff.dashboard');
     })->name('dashboard');
+    
 });
 
-// Redirect root ke login
-Route::get('/', function () {
-    return redirect()->route('login');
-});
-Route::middleware(['auth', 'role:admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-
-});
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('suppliers', SupplierController::class);
-});
-Route::get('/suppliers', [SupplierController::class, 'index'])
-            ->name('admin.suppliers.index');
-
-Route::prefix('admin')->name('admin.')->group(function () {
-
+// ==========================================
+// ROUTE ADMIN
+// ==========================================
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    
     // Dashboard
     Route::get('/dashboard', function () {
         return view('admin.layouts.app');
     })->name('dashboard');
-
+    
+    // Suppliers
+    Route::resource('suppliers', SupplierController::class);
+    
     // Kategori
     Route::resource('kategori', KategoriController::class);
-
+    
     // Jenis Barang
-    Route::resource('jenisbarang', JenisBarangController::class);
-});
-
-Route::get('/kategori', function () {
-    return redirect()->route('admin.kategori.index');
-    });
-Route::get('/jenis-barang', function () {
-    return redirect()->route('admin.jenis_barang.index');
-    });
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('kategori', KategoriController::class);
-});
-
-Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('jenis_barang', JenisBarangController::class);
+    
+    // Stok Barang
+    Route::prefix('stok-barang')->name('barang.')->group(function () {
+        Route::get('/', [BarangController::class, 'index'])->name('index');
+        Route::get('/create', [BarangController::class, 'create'])->name('create');
+        Route::post('/', [BarangController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [BarangController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [BarangController::class, 'update'])->name('update');
+        Route::delete('/{id}', [BarangController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/batch', [BarangController::class, 'addBatch'])->name('add-batch');
+        Route::get('/export', [BarangController::class, 'export'])->name('export');
+    });
+    
+});
+
+// ==========================================
+// ROUTE STAFF
+// ==========================================
+Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
+    
+    Route::get('/dashboard', function () {
+        return view('staff.dashboard');
+    })->name('dashboard');
+    
 });

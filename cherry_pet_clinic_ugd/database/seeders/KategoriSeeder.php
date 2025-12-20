@@ -1,30 +1,32 @@
 <?php
+// File: database/seeders/KategoriSeeder.php
 
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Kategori;
-use App\Models\JenisBarang;
+use Illuminate\Support\Facades\DB;
 
 class KategoriSeeder extends Seeder
 {
     public function run(): void
     {
-        $medis = Kategori::create(['nama_kategori' => 'Medis']);
-        $nonMedis = Kategori::create(['nama_kategori' => 'Non Medis']);
+        $kategoris = [
+            ['nama_kategori' => 'Obat Hewan', 'jenis' => 'medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Vaksin', 'jenis' => 'medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Vitamin', 'jenis' => 'medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Cairan Infus', 'jenis' => 'medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Alat Bedah', 'jenis' => 'medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Alat Medis Habis Pakai', 'jenis' => 'medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Alat Pemeriksaan', 'jenis' => 'medis', 'created_at' => now(), 'updated_at' => now()],
+            
+            ['nama_kategori' => 'Makanan Hewan', 'jenis' => 'non-medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Perawatan', 'jenis' => 'non-medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Perawatan Klinik', 'jenis' => 'non-medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Susu Formula', 'jenis' => 'non-medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Snack', 'jenis' => 'non-medis', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Alat Kesehatan', 'jenis' => 'non-medis', 'created_at' => now(), 'updated_at' => now()],
+        ];
 
-        JenisBarang::create(['nama_jenis' => 'Obat Hewan', 'kategori_id' => $medis->id, 'icon' => '💊']);
-        JenisBarang::create(['nama_jenis' => 'Vaksin', 'kategori_id' => $medis->id, 'icon' => '💉']);
-        JenisBarang::create(['nama_jenis' => 'Vitamin', 'kategori_id' => $medis->id, 'icon' => '🧪']);
-        JenisBarang::create(['nama_jenis' => 'Vitamin', 'kategori_id' => $medis->id, 'icon' => '🧴']);
-        JenisBarang::create(['nama_jenis' => 'Alat Bedah', 'kategori_id' => $medis->id, 'icon' => '🩺']);
-
-        JenisBarang::create(['nama_jenis' => 'Makanan Hewan', 'kategori_id' => $nonMedis->id, 'icon' => '🍖']);
-        JenisBarang::create(['nama_jenis' => 'Perawatan', 'kategori_id' => $nonMedis->id, 'icon' => '🧴']);
-        JenisBarang::create(['nama_jenis' => 'Perawatan Klinik', 'kategori_id' => $nonMedis->id, 'icon' => '🩺']);
-        JenisBarang::create(['nama_jenis' => 'Susu Formula', 'kategori_id' => $nonMedis->id, 'icon' => '🍼']);
-        JenisBarang::create(['nama_jenis' => 'Snack', 'kategori_id' => $nonMedis->id, 'icon' => '🍪']);
-
-
+        DB::table('kategoris')->insert($kategoris);
     }
 }
