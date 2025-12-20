@@ -1,112 +1,215 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Detail Supplier')
-@section('header-title', 'Detail Supplier')
+@section('page-title', 'Detail Supplier')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-    <!-- Back Button -->
-    <a href="{{ route('admin.suppliers.index') }}"
-       class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6">
-        ← Kembali
-    </a>
+            <!-- Back Button -->
+            <div class="mb-4">
+                <a href="{{ route('admin.suppliers.index') }}"
+                   class="btn btn-link text-decoration-none p-0">
+                    <i class="fas fa-arrow-left me-2"></i> Kembali
+                </a>
+            </div>
 
-    <!-- Header Card -->
-    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-xl p-6 border-b">
-        <div class="flex items-center gap-4">
-            <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs font-semibold text-gray-500">
-                        ID #{{ $supplier->id }}
-                    </span>
-                    <span class="px-3 py-1 text-xs rounded-full
-                        {{ $supplier->kategori->nama_kategori == 'Medis'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-blue-100 text-blue-700' }}">
-                        {{ $supplier->kategori->nama_kategori }}
-                    </span>
+            <!-- Header Card -->
+            <div class="card border-0 shadow-sm mb-0 rounded-bottom-0">
+                <div class="card-body p-4 bg-gradient-primary">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white bg-opacity-25 p-3 rounded">
+                            <i class="fas fa-building text-white fs-3"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge bg-white bg-opacity-25 text-white">
+                                    ID #{{ $supplier->id }}
+                                </span>
+                                <span class="badge {{ $supplier->kategori->nama_kategori == 'Medis' ? 'bg-success' : 'bg-primary' }} rounded-pill">
+                                    {{ $supplier->kategori->nama_kategori }}
+                                </span>
+                            </div>
+                            <h3 class="text-white fw-bold mb-0">
+                                {{ $supplier->nama_supplier }}
+                            </h3>
+                        </div>
+                    </div>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800">
-                    {{ $supplier->nama_supplier }}
-                </h2>
             </div>
+
+            <!-- Body Card -->
+            <div class="card border-0 shadow-sm rounded-top-0">
+                <div class="card-body p-4">
+
+                    <!-- Info Grid -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <p class="text-muted small mb-1">
+                                        <i class="fas fa-id-card me-1"></i> NIB
+                                    </p>
+                                    <h5 class="fw-bold mb-0">{{ $supplier->nib }}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <p class="text-muted small mb-1">
+                                        <i class="fas fa-tag me-1"></i> Kategori
+                                    </p>
+                                    <h5 class="fw-bold mb-0">
+                                        {{ $supplier->kategori->nama_kategori }}
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jenis Barang -->
+                    <div class="card border mb-4">
+                        <div class="card-body">
+                            <p class="text-muted small mb-1">
+                                <i class="fas fa-boxes me-1"></i> Jenis Barang
+                            </p>
+                            <h5 class="fw-bold mb-0">
+                                {{ $supplier->jenisBarang->nama_jenis }}
+                            </h5>
+                        </div>
+                    </div>
+
+                    <!-- Kontak -->
+                    <div class="card border mb-4">
+                        <div class="card-body">
+                            <p class="text-muted small mb-2">
+                                <i class="fas fa-phone me-1"></i> Kontak
+                            </p>
+                            <h5 class="fw-bold mb-3">
+                                {{ $supplier->kontak }}
+                            </h5>
+
+                            <div class="d-flex gap-2">
+                                <a href="https://wa.me/62{{ ltrim($supplier->kontak, '0') }}"
+                                   target="_blank"
+                                   class="btn btn-success flex-fill">
+                                    <i class="fab fa-whatsapp me-2"></i> WhatsApp
+                                </a>
+
+                                <a href="tel:{{ $supplier->kontak }}"
+                                   class="btn btn-secondary flex-fill">
+                                    <i class="fas fa-phone me-2"></i> Telepon
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alamat -->
+                    <div class="card border mb-4">
+                        <div class="card-body">
+                            <p class="text-muted small mb-2">
+                                <i class="fas fa-map-marker-alt me-1"></i> Alamat
+                            </p>
+                            <p class="mb-0 text-dark lh-lg">
+                                {{ $supplier->alamat }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="card border mb-4">
+                        <div class="card-body">
+                            <p class="text-muted small mb-1">
+                                <i class="fas fa-info-circle me-1"></i> Status
+                            </p>
+                            <h5 class="mb-0">
+                                @if($supplier->status == 'aktif')
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle me-1"></i> Aktif
+                                    </span>
+                                @else
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-times-circle me-1"></i> Tidak Aktif
+                                    </span>
+                                @endif
+                            </h5>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-flex gap-2 pt-3 border-top">
+                        <a href="{{ route('admin.suppliers.index') }}"
+                           class="btn btn-secondary flex-fill">
+                            <i class="fas fa-times me-2"></i> Tutup
+                        </a>
+                        <a href="{{ route('admin.suppliers.edit', $supplier) }}"
+                           class="btn btn-success flex-fill">
+                            <i class="fas fa-edit me-2"></i> Edit Supplier
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer Info -->
+            <div class="card border-0 shadow-sm mt-3">
+                <div class="card-body p-3 bg-light">
+                    <div class="row text-center small text-muted">
+                        <div class="col-6">
+                            <i class="fas fa-calendar-plus me-1"></i>
+                            Dibuat: {{ $supplier->created_at->format('d M Y, H:i') }}
+                        </div>
+                        <div class="col-6">
+                            <i class="fas fa-calendar-edit me-1"></i>
+                            Diubah: {{ $supplier->updated_at->format('d M Y, H:i') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <!-- Body Card -->
-    <div class="bg-white rounded-b-xl shadow-sm p-6">
-
-        <!-- Info Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div class="border rounded-lg p-4">
-                <p class="text-sm text-gray-500 mb-1">NIB</p>
-                <p class="text-lg font-semibold">{{ $supplier->nib }}</p>
-            </div>
-
-            <div class="border rounded-lg p-4">
-                <p class="text-sm text-gray-500 mb-1">Kategori</p>
-                <p class="text-lg font-semibold">
-                    {{ $supplier->kategori->nama_kategori }}
-                </p>
-            </div>
-        </div>
-
-        <!-- Jenis Barang -->
-        <div class="border rounded-lg p-4 mb-6">
-            <p class="text-sm text-gray-500 mb-1">Jenis Barang</p>
-            <p class="text-lg font-semibold">
-                {{ $supplier->jenisBarang->nama_jenis }}
-            </p>
-        </div>
-
-        <!-- Kontak -->
-        <div class="border rounded-lg p-4 mb-6">
-            <p class="text-sm text-gray-500 mb-2">Kontak</p>
-            <p class="text-lg font-semibold mb-4">
-                {{ $supplier->kontak }}
-            </p>
-
-            <div class="flex gap-3">
-                <a href="https://wa.me/62{{ ltrim($supplier->kontak, '0') }}"
-                   target="_blank"
-                   class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                    WhatsApp
-                </a>
-
-                <a href="tel:{{ $supplier->kontak }}"
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
-                    Telepon
-                </a>
-            </div>
-        </div>
-
-        <!-- Alamat -->
-        <div class="border rounded-lg p-4 mb-6">
-            <p class="text-sm text-gray-500 mb-2">Alamat</p>
-            <p class="text-gray-700 leading-relaxed">
-                {{ $supplier->alamat }}
-            </p>
-        </div>
-
-        <!-- Actions -->
-        <div class="flex gap-3">
-            <a href="{{ route('admin.suppliers.index') }}"
-               class="flex-1 bg-gray-300 text-center px-6 py-3 rounded-lg">
-                Tutup
-            </a>
-            <a href="{{ route('admin.suppliers.edit', $supplier) }}"
-               class="flex-1 bg-green-600 text-white text-center px-6 py-3 rounded-lg">
-                Edit Supplier
-            </a>
-        </div>
-    </div>
-
-    <!-- Footer Info -->
-    <div class="mt-4 text-xs text-gray-500 text-center">
-        <p>Dibuat: {{ $supplier->created_at->format('d M Y, H:i') }}</p>
-        <p>Diubah: {{ $supplier->updated_at->format('d M Y, H:i') }}</p>
-    </div>
-
 </div>
+
+@push('styles')
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .btn {
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .rounded-top-0 {
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+    }
+
+    .rounded-bottom-0 {
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    .bg-white.bg-opacity-25 {
+        background-color: rgba(255, 255, 255, 0.25) !important;
+    }
+
+    .lh-lg {
+        line-height: 1.75;
+    }
+</style>
+@endpush
 @endsection

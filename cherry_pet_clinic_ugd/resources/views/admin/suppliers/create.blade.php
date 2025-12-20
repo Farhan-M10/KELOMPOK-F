@@ -1,129 +1,148 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Tambah Supplier')
-@section('header-title', 'Tambah Supplier Baru')
+@section('page-title', 'Tambah Supplier Baru')
 
 @section('content')
-<div class="container mx-auto px-4 py-6 max-w-3xl">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-    <div class="mb-6">
-        <a href="{{ route('admin.suppliers.index') }}" class="text-blue-600 flex items-center gap-2 mb-4">
-            ← Kembali
-        </a>
-        <h2 class="text-xl font-bold">Form Tambah Supplier</h2>
-    </div>
-
-    <div class="bg-white rounded-lg shadow-sm p-6">
-        <form action="{{ route('admin.suppliers.store') }}" method="POST" id="supplierForm">
-            @csrf
-
-            {{-- Nama Supplier --}}
-            <div class="mb-5">
-                <label class="block text-sm font-semibold mb-2">
-                    Nama Supplier <span class="text-red-500">*</span>
-                </label>
-                <input type="text" name="nama_supplier" value="{{ old('nama_supplier') }}"
-                    class="w-full px-4 py-3 border rounded-lg @error('nama_supplier') border-red-500 @enderror"
-                    placeholder="PT. Sejahtera Medika">
-                @error('nama_supplier')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            {{-- NIB --}}
-            <div class="mb-5">
-                <label class="block text-sm font-semibold mb-2">
-                    NIB <span class="text-red-500">*</span>
-                </label>
-                <input type="text" name="nib" value="{{ old('nib') }}"
-                    class="w-full px-4 py-3 border rounded-lg @error('nib') border-red-500 @enderror"
-                    placeholder="1276189002457">
-                @error('nib')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            {{-- Jenis Barang --}}
-            <div class="mb-5">
-                <label class="block text-sm font-semibold mb-2">
-                    Jenis Barang <span class="text-red-500">*</span>
-                </label>
-                <select name="jenis_barang_id"
-                    class="w-full px-4 py-3 border rounded-lg @error('jenis_barang_id') border-red-500 @enderror">
-                    <option value="">Pilih jenis barang</option>
-                    @foreach($jenisBarangs->groupBy('kategori.nama_kategori') as $kat => $items)
-                        <optgroup label="{{ $kat }}">
-                            @foreach($items as $j)
-                                <option value="{{ $j->id }}" @selected(old('jenis_barang_id') == $j->id)>
-                                    {{ $j->nama_jenis }}
-                                </option>
-                            @endforeach
-                        </optgroup>
-                    @endforeach
-                </select>
-                @error('jenis_barang_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            {{-- Alamat --}}
-            <div class="mb-5">
-                <label class="block text-sm font-semibold mb-2">
-                    Alamat <span class="text-red-500">*</span>
-                </label>
-                <textarea name="alamat" rows="3"
-                    class="w-full px-4 py-3 border rounded-lg @error('alamat') border-red-500 @enderror"
-                    placeholder="Jl. Kesehatan No.1">{{ old('alamat') }}</textarea>
-                @error('alamat')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            {{-- Kontak --}}
-            <div class="mb-5">
-                <label class="block text-sm font-semibold mb-2">
-                    Kontak <span class="text-red-500">*</span>
-                </label>
-                <input type="text" name="kontak" value="{{ old('kontak') }}"
-                    class="w-full px-4 py-3 border rounded-lg @error('kontak') border-red-500 @enderror"
-                    placeholder="081329891201">
-                @error('kontak')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            {{-- Status --}}
-            <div class="mb-6">
-                <label class="block text-sm font-semibold mb-2">
-                    Status <span class="text-red-500">*</span>
-                </label>
-                <select name="status"
-                    class="w-full px-4 py-3 border rounded-lg @error('status') border-red-500 @enderror">
-                    <option value="aktif">Aktif</option>
-                    <option value="tidak_aktif">Tidak Aktif</option>
-                </select>
-                @error('status')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            {{-- Button --}}
-            <div class="flex gap-3">
-                <button type="submit" id="submitBtn"
-                    class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                    <span id="btnText">Simpan</span>
-                    <span id="btnLoading" class="hidden">Menyimpan...</span>
-                </button>
-                <a href="{{ route('admin.suppliers.index') }}"
-                    class="flex-1 bg-gray-200 text-gray-800 px-6 py-3 rounded-lg text-center hover:bg-gray-300">
-                    Batal
+            <!-- Back Button & Title -->
+            <div class="mb-4">
+                <a href="{{ route('admin.suppliers.index') }}" class="btn btn-link text-decoration-none p-0 mb-3">
+                    <i class="fas fa-arrow-left me-2"></i> Kembali
                 </a>
+                <h4 class="fw-bold mb-0">Form Tambah Supplier</h4>
             </div>
 
-        </form>
+            <!-- Form Card -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form action="{{ route('admin.suppliers.store') }}" method="POST" id="supplierForm">
+                        @csrf
+
+                        <!-- Nama Supplier -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Nama Supplier <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" name="nama_supplier" value="{{ old('nama_supplier') }}"
+                                class="form-control @error('nama_supplier') is-invalid @enderror"
+                                placeholder="PT. Sejahtera Medika">
+                            @error('nama_supplier')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- NIB -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                NIB <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" name="nib" value="{{ old('nib') }}"
+                                class="form-control @error('nib') is-invalid @enderror"
+                                placeholder="1276189002457">
+                            @error('nib')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Jenis Barang -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Jenis Barang <span class="text-danger">*</span>
+                            </label>
+                            <select name="jenis_barang_id" id="jenisBarangSelect"
+                                class="form-select @error('jenis_barang_id') is-invalid @enderror">
+                                <option value="">Pilih jenis barang</option>
+                                @if(isset($jenisBarangs) && $jenisBarangs->isNotEmpty())
+                                    @foreach($jenisBarangs->groupBy('kategori.nama_kategori') as $kategoriNama => $items)
+                                        <optgroup label="{{ $kategoriNama }}">
+                                            @foreach($items as $jenis)
+                                                <option value="{{ $jenis->id }}"
+                                                    {{ old('jenis_barang_id') == $jenis->id ? 'selected' : '' }}>
+                                                    {{ $jenis->nama_jenis }}
+                                                </option>
+                                            @endforeach
+                                        </optgroup>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('jenis_barang_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Total {{ isset($jenisBarangs) ? $jenisBarangs->count() : 0 }} jenis barang tersedia
+                            </div>
+                        </div>
+
+                        <!-- Alamat -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Alamat <span class="text-danger">*</span>
+                            </label>
+                            <textarea name="alamat" rows="3"
+                                class="form-control @error('alamat') is-invalid @enderror"
+                                placeholder="Jl. Kesehatan No.1">{{ old('alamat') }}</textarea>
+                            @error('alamat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Kontak -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Kontak <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" name="kontak" value="{{ old('kontak') }}"
+                                class="form-control @error('kontak') is-invalid @enderror"
+                                placeholder="081329891201">
+                            @error('kontak')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Status -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Status <span class="text-danger">*</span>
+                            </label>
+                            <select name="status"
+                                class="form-select @error('status') is-invalid @enderror">
+                                <option value="aktif" @selected(old('status', 'aktif') == 'aktif')>Aktif</option>
+                                <option value="tidak_aktif" @selected(old('status') == 'tidak_aktif')>Tidak Aktif</option>
+                            </select>
+                            @error('status')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-2 pt-3 border-top">
+                            <button type="submit" id="submitBtn" class="btn btn-primary flex-fill">
+                                <i class="fas fa-save me-2"></i>
+                                <span id="btnText">Simpan</span>
+                                <span id="btnLoading" class="d-none">
+                                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                                    Menyimpan...
+                                </span>
+                            </button>
+                            <a href="{{ route('admin.suppliers.index') }}" class="btn btn-secondary flex-fill">
+                                <i class="fas fa-times me-2"></i> Batal
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
+@push('scripts')
 <script>
     // Prevent double submission
     const form = document.getElementById('supplierForm');
@@ -141,8 +160,40 @@
 
         isSubmitting = true;
         submitBtn.disabled = true;
-        btnText.classList.add('hidden');
-        btnLoading.classList.remove('hidden');
+        btnText.classList.add('d-none');
+        btnLoading.classList.remove('d-none');
     });
 </script>
+@endpush
+
+@push('styles')
+<style>
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+
+    .btn {
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .form-label {
+        margin-bottom: 0.5rem;
+        color: #212529;
+    }
+
+    .invalid-feedback {
+        display: block;
+    }
+</style>
+@endpush
 @endsection

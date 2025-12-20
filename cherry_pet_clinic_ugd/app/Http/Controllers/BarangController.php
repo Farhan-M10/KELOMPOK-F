@@ -19,7 +19,7 @@ class BarangController extends Controller
             $query = Barang::with(['batchBarangs', 'kategori', 'jenisBarang']);
 
             $jenisTab = $request->get('jenis_tab', 'medis');
-            
+
             $query->whereHas('kategori', function($q) use ($jenisTab) {
                 $q->where('jenis', $jenisTab);
             });
@@ -46,8 +46,8 @@ class BarangController extends Controller
             $kategoris = Kategori::all();
             $jenisBarangs = JenisBarang::all();
 
-            return view('stok_barang.index', compact('barangs', 'kategoris', 'jenisBarangs'));
-            
+            return view('admin.stok_barang.index', compact('barangs', 'kategoris', 'jenisBarangs'));
+
         } catch (\Exception $e) {
             Log::error('Error di BarangController index: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -58,7 +58,7 @@ class BarangController extends Controller
     {
         $kategoris = Kategori::all();
         $jenisBarangs = JenisBarang::all();
-        return view('stok_barang.create', compact('kategoris', 'jenisBarangs'));
+        return view('admin.stok_barang.create', compact('kategoris', 'jenisBarangs'));
     }
 
     public function store(Request $request)
@@ -112,7 +112,7 @@ class BarangController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.barang.index')
+            return redirect()->route('admin.stok_barang.index')
                 ->with('success', 'Barang berhasil ditambahkan dengan ' . count($request->batches) . ' batch');
 
         } catch (\Exception $e) {
@@ -128,7 +128,8 @@ class BarangController extends Controller
         $barang = Barang::with('batchBarangs')->findOrFail($id);
         $kategoris = Kategori::all();
         $jenisBarangs = JenisBarang::all();
-        return view('stok_barang.edit', compact('barang', 'kategoris', 'jenisBarangs'));
+        // PERBAIKAN: Tambah titik antara admin dan stok_barang
+        return view('admin.stok_barang.edit', compact('barang', 'kategoris', 'jenisBarangs'));
     }
 
     public function update(Request $request, $id)
@@ -147,7 +148,8 @@ class BarangController extends Controller
         $barang = Barang::findOrFail($id);
         $barang->update($request->all());
 
-        return redirect()->route('admin.barang.index')
+        // PERBAIKAN: Ganti route ke admin.stok_barang.index
+        return redirect()->route('admin.stok_barang.index')
             ->with('success', 'Barang berhasil diupdate');
     }
 
@@ -157,10 +159,12 @@ class BarangController extends Controller
             $barang = Barang::findOrFail($id);
             $barang->delete();
 
-            return redirect()->route('admin.barang.index')
+            // PERBAIKAN: Ganti route ke admin.stok_barang.index
+            return redirect()->route('admin.stok_barang.index')
                 ->with('success', 'Barang berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->route('admin.barang.index')
+            // PERBAIKAN: Ganti route ke admin.stok_barang.index
+            return redirect()->route('admin.stok_barang.index')
                 ->with('error', 'Gagal menghapus barang: ' . $e->getMessage());
         }
     }
@@ -192,7 +196,7 @@ class BarangController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.barang.index')
+            return redirect()->route('admin.stok_barang.index')
                 ->with('success', 'Batch berhasil ditambahkan');
 
         } catch (\Exception $e) {

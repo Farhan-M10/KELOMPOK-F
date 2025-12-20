@@ -11,23 +11,23 @@ class JenisBarangController extends Controller
     public function index(Request $request)
     {
         $kategori_id = $request->get('kategori_id');
-        
+
         $query = JenisBarang::with('kategori');
-        
+
         if ($kategori_id) {
             $query->where('kategori_id', $kategori_id);
         }
-        
+
         $jenisBarangs = $query->paginate(10);
         $kategoris = Kategori::all();
-        
-        return view('jenis-barangs.index', compact('jenisBarangs', 'kategoris', 'kategori_id'));
+
+        return view('admin.jenis_barang.index', compact('jenisBarangs', 'kategoris', 'kategori_id'));
     }
 
     public function create()
     {
         $kategoris = Kategori::all();
-        return view('jenis-barangs.create', compact('kategoris'));
+        return view('admin.jenis_barang.create', compact('kategoris'));
     }
 
     public function store(Request $request)
@@ -41,20 +41,20 @@ class JenisBarangController extends Controller
 
         JenisBarang::create($validated);
 
-        return redirect()->route('jenis-barangs.index')
+        return redirect()->route('admin_jenis_barang.index')
             ->with('success', 'Jenis barang berhasil ditambahkan');
     }
 
     public function show(JenisBarang $jenisBarang)
     {
         $jenisBarang->load('kategori');
-        return view('jenis-barangs.show', compact('jenisBarang'));
+        return view('admin.jenis_barang.show', compact('jenisBarang'));
     }
 
     public function edit(JenisBarang $jenisBarang)
     {
         $kategoris = Kategori::all();
-        return view('jenis-barangs.edit', compact('jenisBarang', 'kategoris'));
+        return view('admin.jenis_barang.edit', compact('jenisBarang', 'kategoris'));
     }
 
     public function update(Request $request, JenisBarang $jenisBarang)
@@ -68,7 +68,7 @@ class JenisBarangController extends Controller
 
         $jenisBarang->update($validated);
 
-        return redirect()->route('jenis-barangs.index')
+        return redirect()->route('admin.jenis_barang.index')
             ->with('success', 'Jenis barang berhasil diperbarui');
     }
 
@@ -76,10 +76,10 @@ class JenisBarangController extends Controller
     {
         try {
             $jenisBarang->delete();
-            return redirect()->route('jenis-barangs.index')
+            return redirect()->route('admin.jenis_barang.index')
                 ->with('success', 'Jenis barang berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->route('jenis-barangs.index')
+            return redirect()->route('admin.jenis_barang.index')
                 ->with('error', 'Jenis barang tidak dapat dihapus karena masih memiliki relasi dengan data lain');
         }
     }

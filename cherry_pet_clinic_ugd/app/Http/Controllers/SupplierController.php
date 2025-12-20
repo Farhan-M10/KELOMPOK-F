@@ -33,10 +33,15 @@ class SupplierController extends Controller
     }
 
     public function create()
-    {
-        $jenisBarangs = JenisBarang::with('kategori')->get();
-        return view('admin.suppliers.create', compact('jenisBarangs'));
-    }
+{
+    // Ambil jenis barang dengan relasi kategori, diurutkan berdasarkan kategori dan nama
+    $jenisBarangs = JenisBarang::with('kategori')
+        ->orderBy('kategori_id')
+        ->orderBy('nama_jenis')
+        ->get();
+
+    return view('admin.suppliers.create', compact('jenisBarangs'));
+}
 
     public function store(Request $request)
     {

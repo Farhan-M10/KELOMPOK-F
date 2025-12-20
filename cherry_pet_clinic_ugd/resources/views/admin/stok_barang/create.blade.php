@@ -1,20 +1,20 @@
 {{-- File: resources/views/stok_barang/create.blade.php --}}
 
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 <div class="container-fluid" style="max-width: 900px;">
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
-            <form action="{{ route('admin.barang.store') }}" method="POST" id="formBarang">
+            <form action="{{ route('admin.stok_barang.store') }}" method="POST" id="formBarang">
                 @csrf
 
                 {{-- Nama Barang --}}
                 <div class="mb-4">
                     <label class="form-label fw-bold">Nama Barang <span class="text-danger">*</span></label>
-                    <input type="text" name="nama_barang" 
-                           class="form-control form-control-lg @error('nama_barang') is-invalid @enderror" 
-                           value="{{ old('nama_barang') }}" 
+                    <input type="text" name="nama_barang"
+                           class="form-control form-control-lg @error('nama_barang') is-invalid @enderror"
+                           value="{{ old('nama_barang') }}"
                            placeholder="Amoxicillin 500mg"
                            required>
                     @error('nama_barang')
@@ -75,9 +75,9 @@
                     {{-- Ruangan --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Ruangan <span class="text-danger">*</span></label>
-                        <input type="text" name="ruangan" 
-                               class="form-control form-control-lg @error('ruangan') is-invalid @enderror" 
-                               value="{{ old('ruangan') }}" 
+                        <input type="text" name="ruangan"
+                               class="form-control form-control-lg @error('ruangan') is-invalid @enderror"
+                               value="{{ old('ruangan') }}"
                                placeholder="Ruang Display Lt. 1"
                                required>
                         @error('ruangan')
@@ -106,9 +106,9 @@
                     {{-- Stok Minimum --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Stok Minimum</label>
-                        <input type="number" name="stok_minimum" 
-                               class="form-control form-control-lg @error('stok_minimum') is-invalid @enderror" 
-                               value="{{ old('stok_minimum', 10) }}" 
+                        <input type="number" name="stok_minimum"
+                               class="form-control form-control-lg @error('stok_minimum') is-invalid @enderror"
+                               value="{{ old('stok_minimum', 10) }}"
                                placeholder="10"
                                min="0">
                         <small class="text-primary">Alert akan muncul jika stok di bawah nilai ini</small>
@@ -121,9 +121,9 @@
                 {{-- Deskripsi Barang --}}
                 <div class="mb-4">
                     <label class="form-label fw-bold">Deskripsi Barang</label>
-                    <textarea name="deskripsi" 
-                              class="form-control @error('deskripsi') is-invalid @enderror" 
-                              rows="3" 
+                    <textarea name="deskripsi"
+                              class="form-control @error('deskripsi') is-invalid @enderror"
+                              rows="3"
                               style="resize: none;"
                               placeholder="Masukan deskripsi, kegunaan, cara penggunaan, atau informasi yang relevan...">{{ old('deskripsi') }}</textarea>
                     @error('deskripsi')
@@ -155,8 +155,8 @@
                             {{-- Nomor Batch --}}
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Nomor Batch <span class="text-danger">*</span></label>
-                                <input type="text" name="batches[0][nomor_batch]" 
-                                       class="form-control" 
+                                <input type="text" name="batches[0][nomor_batch]"
+                                       class="form-control"
                                        placeholder="B-240915"
                                        required>
                             </div>
@@ -164,8 +164,8 @@
                             {{-- Jumlah --}}
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Jumlah <span class="text-danger">*</span></label>
-                                <input type="number" name="batches[0][jumlah]" 
-                                       class="form-control" 
+                                <input type="number" name="batches[0][jumlah]"
+                                       class="form-control"
                                        placeholder="15"
                                        min="1"
                                        required>
@@ -176,16 +176,16 @@
                             {{-- Tanggal Masuk --}}
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Tanggal Masuk <span class="text-danger">*</span></label>
-                                <input type="date" name="batches[0][tanggal_masuk]" 
-                                       class="form-control" 
+                                <input type="date" name="batches[0][tanggal_masuk]"
+                                       class="form-control"
                                        required>
                             </div>
 
                             {{-- Tanggal Kadaluarsa --}}
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Tanggal Kadaluarsa <span class="text-danger">*</span></label>
-                                <input type="date" name="batches[0][tanggal_kadaluarsa]" 
-                                       class="form-control" 
+                                <input type="date" name="batches[0][tanggal_kadaluarsa]"
+                                       class="form-control"
                                        required>
                             </div>
                         </div>
@@ -196,7 +196,7 @@
 
                 {{-- Action Buttons --}}
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('admin.barang.index') }}" class="btn btn-lg btn-light px-4">
+                    <a href="{{ route('admin.stok_barang.index') }}" class="btn btn-lg btn-light px-4">
                         Batal
                     </a>
                     <button type="submit" class="btn btn-lg btn-primary px-4">
@@ -214,38 +214,38 @@
         border: 1px solid #dee2e6;
         padding: 0.625rem 0.875rem;
     }
-    
+
     .form-control:focus, .form-select:focus {
         border-color: #0d6efd;
         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
     }
-    
+
     .form-label {
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
         color: #212529;
     }
-    
+
     .batch-item {
         border: 1px solid #e9ecef;
         transition: all 0.2s;
     }
-    
+
     .batch-item:hover {
         border-color: #dee2e6;
     }
-    
+
     .btn-hapus-batch {
         background-color: #ffe5e5;
         color: #dc3545;
         font-size: 0.875rem;
         padding: 0.375rem 0.75rem;
     }
-    
+
     .btn-hapus-batch:hover {
         background-color: #ffcccc;
     }
-    
+
     input[type="date"]::-webkit-calendar-picker-indicator {
         cursor: pointer;
     }
@@ -262,10 +262,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tambah Batch Baru
     btnTambahBatch.addEventListener('click', function() {
         const newBatch = document.querySelector('.batch-item').cloneNode(true);
-        
+
         // Update batch number
         newBatch.querySelector('h6').textContent = `Batch #${batchCount + 1}`;
-        
+
         // Update input names dan clear values
         const inputs = newBatch.querySelectorAll('input');
         inputs.forEach(input => {
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show hapus button
         const hapusBtn = newBatch.querySelector('.btn-hapus-batch');
         hapusBtn.style.display = 'inline-block';
-        
+
         batchContainer.appendChild(newBatch);
         batchCount++;
 
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.classList.contains('btn-hapus-batch') || e.target.closest('.btn-hapus-batch')) {
             const batchItem = e.target.closest('.batch-item');
             const allBatches = document.querySelectorAll('.batch-item');
-            
+
             if (allBatches.length > 1) {
                 batchItem.remove();
                 updateBatchNumbers();
@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const batches = document.querySelectorAll('.batch-item');
         batches.forEach((batch, index) => {
             batch.querySelector('h6').textContent = `Batch #${index + 1}`;
-            
+
             const inputs = batch.querySelectorAll('input');
             inputs.forEach(input => {
                 const name = input.getAttribute('name');
@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.type === 'date') {
             const tanggalMasuk = e.target.closest('.batch-item').querySelector('input[name*="[tanggal_masuk]"]');
             const tanggalKadaluarsa = e.target.closest('.batch-item').querySelector('input[name*="[tanggal_kadaluarsa]"]');
-            
+
             if (tanggalMasuk && tanggalKadaluarsa && tanggalMasuk.value && tanggalKadaluarsa.value) {
                 if (new Date(tanggalKadaluarsa.value) <= new Date(tanggalMasuk.value)) {
                     alert('Tanggal kadaluarsa harus lebih besar dari tanggal masuk!');

@@ -26,37 +26,37 @@ Route::get('/', function () {
 // ROUTE AUTHENTICATED
 // ==========================================
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
         return redirect()->route('staff.dashboard');
     })->name('dashboard');
-    
+
 });
 
 // ==========================================
 // ROUTE ADMIN
 // ==========================================
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    
+
     // Dashboard
     Route::get('/dashboard', function () {
         return view('admin.layouts.app');
     })->name('dashboard');
-    
+
     // Suppliers
     Route::resource('suppliers', SupplierController::class);
-    
+
     // Kategori
     Route::resource('kategori', KategoriController::class);
-    
+
     // Jenis Barang
     Route::resource('jenis_barang', JenisBarangController::class);
-    
+
     // Stok Barang
-    Route::prefix('stok-barang')->name('barang.')->group(function () {
+    Route::prefix('stok_barang')->name('stok_barang.')->group(function () {
         Route::get('/', [BarangController::class, 'index'])->name('index');
         Route::get('/create', [BarangController::class, 'create'])->name('create');
         Route::post('/', [BarangController::class, 'store'])->name('store');
@@ -66,16 +66,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::post('/{id}/batch', [BarangController::class, 'addBatch'])->name('add-batch');
         Route::get('/export', [BarangController::class, 'export'])->name('export');
     });
-    
+
 });
 
 // ==========================================
 // ROUTE STAFF
 // ==========================================
 Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
-    
+
     Route::get('/dashboard', function () {
         return view('staff.dashboard');
     })->name('dashboard');
-    
+
 });

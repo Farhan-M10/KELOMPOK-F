@@ -1,6 +1,6 @@
 {{-- File: resources/views/stok_barang/edit.blade.php --}}
 
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 <div class="container-fluid" style="max-width: 900px;">
@@ -9,16 +9,16 @@
             <h4 class="mb-0">Edit Barang: {{ $barang->nama_barang }}</h4>
         </div>
         <div class="card-body p-4">
-            <form action="{{ route('admin.barang.update', $barang->id) }}" method="POST">
+            <form action="{{ route('admin.stok_barang.update', $barang->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
                 {{-- Nama Barang --}}
                 <div class="mb-4">
                     <label class="form-label fw-bold">Nama Barang <span class="text-danger">*</span></label>
-                    <input type="text" name="nama_barang" 
-                           class="form-control form-control-lg @error('nama_barang') is-invalid @enderror" 
-                           value="{{ old('nama_barang', $barang->nama_barang) }}" 
+                    <input type="text" name="nama_barang"
+                           class="form-control form-control-lg @error('nama_barang') is-invalid @enderror"
+                           value="{{ old('nama_barang', $barang->nama_barang) }}"
                            required>
                     @error('nama_barang')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -78,9 +78,9 @@
                     {{-- Ruangan --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Ruangan <span class="text-danger">*</span></label>
-                        <input type="text" name="ruangan" 
-                               class="form-control form-control-lg @error('ruangan') is-invalid @enderror" 
-                               value="{{ old('ruangan', $barang->ruangan) }}" 
+                        <input type="text" name="ruangan"
+                               class="form-control form-control-lg @error('ruangan') is-invalid @enderror"
+                               value="{{ old('ruangan', $barang->ruangan) }}"
                                required>
                         @error('ruangan')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -108,9 +108,9 @@
                     {{-- Stok Minimum --}}
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Stok Minimum</label>
-                        <input type="number" name="stok_minimum" 
-                               class="form-control form-control-lg @error('stok_minimum') is-invalid @enderror" 
-                               value="{{ old('stok_minimum', $barang->stok_minimum) }}" 
+                        <input type="number" name="stok_minimum"
+                               class="form-control form-control-lg @error('stok_minimum') is-invalid @enderror"
+                               value="{{ old('stok_minimum', $barang->stok_minimum) }}"
                                min="0">
                         <small class="text-primary">Alert akan muncul jika stok di bawah nilai ini</small>
                         @error('stok_minimum')
@@ -122,9 +122,9 @@
                 {{-- Deskripsi Barang --}}
                 <div class="mb-4">
                     <label class="form-label fw-bold">Deskripsi Barang</label>
-                    <textarea name="deskripsi" 
-                              class="form-control @error('deskripsi') is-invalid @enderror" 
-                              rows="3" 
+                    <textarea name="deskripsi"
+                              class="form-control @error('deskripsi') is-invalid @enderror"
+                              rows="3"
                               style="resize: none;">{{ old('deskripsi', $barang->deskripsi) }}</textarea>
                     @error('deskripsi')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -172,7 +172,7 @@
 
                 {{-- Action Buttons --}}
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('admin.barang.index') }}" class="btn btn-lg btn-light px-4">
+                    <a href="{{ route('admin.stok_barang.index') }}" class="btn btn-lg btn-light px-4">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                     <button type="submit" class="btn btn-lg btn-primary px-4">
@@ -190,18 +190,18 @@
         border: 1px solid #dee2e6;
         padding: 0.625rem 0.875rem;
     }
-    
+
     .form-control:focus, .form-select:focus {
         border-color: #0d6efd;
         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
     }
-    
+
     .form-label {
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
         color: #212529;
     }
-    
+
     .badge {
         font-size: 0.75rem;
         padding: 0.35em 0.65em;

@@ -22,14 +22,14 @@
         <div class="card-body p-0">
             <ul class="nav nav-tabs nav-fill custom-tabs">
                 <li class="nav-item">
-                    <a class="nav-link @if(request('jenis_tab') != 'non-medis') active @endif" 
-                       href="{{ route('admin.barang.index', array_merge(request()->except('jenis_tab', 'kategori_id'), ['jenis_tab' => 'medis'])) }}">
+                    <a class="nav-link @if(request('jenis_tab') != 'non-medis') active @endif"
+                       href="{{ route('admin.stok_barang.index', array_merge(request()->except('jenis_tab', 'kategori_id'), ['jenis_tab' => 'medis'])) }}">
                         Medis
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @if(request('jenis_tab') == 'non-medis') active @endif" 
-                       href="{{ route('admin.barang.index', array_merge(request()->except('jenis_tab', 'kategori_id'), ['jenis_tab' => 'non-medis'])) }}">
+                    <a class="nav-link @if(request('jenis_tab') == 'non-medis') active @endif"
+                       href="{{ route('admin.stok_barang.index', array_merge(request()->except('jenis_tab', 'kategori_id'), ['jenis_tab' => 'non-medis'])) }}">
                         Non-Medis
                     </a>
                 </li>
@@ -39,12 +39,12 @@
 
     <div class="card mb-3">
         <div class="card-body">
-            <form method="GET" action="{{ route('admin.barang.index') }}">
+            <form method="GET" action="{{ route('admin.stok_barang.index') }}">
                 <input type="hidden" name="jenis_tab" value="{{ request('jenis_tab', 'medis') }}">
-                
+
                 <div class="row g-2">
                     <div class="col-md-3">
-                        <input type="text" name="search" class="form-control" 
+                        <input type="text" name="search" class="form-control"
                                placeholder="Cari barang..." value="{{ request('search') }}">
                     </div>
 
@@ -90,13 +90,13 @@
                         <button type="submit" class="btn btn-primary btn-sm">
                             <i class="fas fa-search"></i>
                         </button>
-                        <a href="{{ route('admin.barang.index', ['jenis_tab' => request('jenis_tab', 'medis')]) }}" class="btn btn-secondary btn-sm">
+                        <a href="{{ route('admin.stok_barang.index', ['jenis_tab' => request('jenis_tab', 'medis')]) }}" class="btn btn-secondary btn-sm">
                             <i class="fas fa-redo"></i>
                         </a>
-                        <a href="{{ route('admin.barang.export') }}" class="btn btn-success btn-sm">
+                        <a href="{{ route('admin.stok_barang.export') }}" class="btn btn-success btn-sm">
                             <i class="fas fa-download"></i> Export
                         </a>
-                        <a href="{{ route('admin.barang.create') }}" class="btn btn-danger btn-sm">
+                        <a href="{{ route('admin.stok_barang.create') }}" class="btn btn-danger btn-sm">
                             <i class="fas fa-plus"></i> Tambah barang
                         </a>
                     </div>
@@ -164,15 +164,15 @@
                                 @endforeach
                             </td>
                             <td class="td-padding text-center">
-                                <a href="{{ route('admin.barang.edit', $barang->id) }}" 
+                                <a href="{{ route('admin.stok_barang.edit', $barang->id) }}"
                                    class="btn btn-sm btn-outline-primary btn-action">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('admin.barang.destroy', $barang->id) }}" 
+                                <form action="{{ route('admin.stok_barang.destroy', $barang->id) }}"
                                       method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
+                                    <button type="submit"
                                             class="btn btn-sm btn-outline-danger btn-action"
                                             onclick="return confirm('Yakin ingin menghapus barang ini?')">
                                         <i class="fas fa-trash"></i>

@@ -4,190 +4,314 @@
 @section('page-title', 'Pemasok')
 
 @section('content')
-<div class="max-w-7xl mx-auto">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Pemasok</h1>
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
-            <div class="bg-white rounded-lg p-5 shadow border border-gray-100">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm mb-1">Total Supplier</p>
-                        <p class="text-3xl font-semibold text-gray-800">{{ \App\Models\Supplier::count() }}</p>
-                    </div>
-                    <div class="bg-indigo-50 p-3 rounded-lg">
-                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+<div class="container-fluid">
 
-            <div class="bg-white rounded-lg p-5 shadow border border-gray-100">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm mb-1">Supplier Aktif</p>
-                        <p class="text-3xl font-semibold text-gray-800">{{ \App\Models\Supplier::where('status', 'aktif')->count() }}</p>
-                    </div>
-                    <div class="bg-emerald-50 p-3 rounded-lg">
-                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg p-5 shadow border border-gray-100">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm mb-1">Jenis Produk</p>
-                        <p class="text-3xl font-semibold text-gray-800">{{ \App\Models\JenisBarang::count() }}</p>
-                    </div>
-                    <div class="bg-sky-50 p-3 rounded-lg">
-                        <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                        </svg>
+    <!-- Stats Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted small mb-1">Total Supplier</p>
+                            <h3 class="fw-bold mb-0">{{ \App\Models\Supplier::count() }}</h3>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-building text-primary fs-4"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Search & Filter Bar -->
-        <div class="bg-white rounded-lg shadow border border-gray-100 p-4 mb-6">
-            <form method="GET" class="flex flex-col md:flex-row gap-3">
-                <div class="flex-1 relative">
-                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Cari nama supplier, NIB, atau alamat..."
-                        class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted small mb-1">Supplier Aktif</p>
+                            <h3 class="fw-bold mb-0">{{ \App\Models\Supplier::where('status', 'aktif')->count() }}</h3>
+                        </div>
+                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-check-circle text-success fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted small mb-1">Jenis Produk</p>
+                            <h3 class="fw-bold mb-0">{{ \App\Models\JenisBarang::count() }}</h3>
+                        </div>
+                        <div class="bg-info bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-boxes text-info fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Cari nama supplier, NIB, atau alamat..."
+                            class="form-control border-start-0 ps-0">
+                    </div>
                 </div>
 
-                <select name="kategori" class="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-    <option value="">Semua Jenis Produk</option>
-    <option value="Medis" {{ request('kategori') == 'Medis' ? 'selected' : '' }}>Medis</option>
-    <option value="Non-Medis" {{ request('kategori') == 'Non-Medis' ? 'selected' : '' }}>Non Medis</option>
-</select>
+                <div class="col-md-3">
+                    <select name="kategori" class="form-select">
+                        <option value="">Semua Jenis Produk</option>
+                        <option value="Medis" {{ request('kategori') == 'Medis' ? 'selected' : '' }}>Medis</option>
+                        <option value="Non-Medis" {{ request('kategori') == 'Non-Medis' ? 'selected' : '' }}>Non Medis</option>
+                    </select>
+                </div>
 
-                <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                    Filter
-                </button>
-                <a href="{{ route('admin.suppliers.create') }}" class="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors">
-                    + Tambah Supplier
-                </a>
+                <div class="col-md-4 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter me-1"></i> Filter
+                    </button>
+                    <a href="{{ route('admin.suppliers.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-redo me-1"></i> Reset
+                    </a>
+                    <a href="{{ route('admin.suppliers.create') }}" class="btn btn-danger">
+                        <i class="fas fa-plus me-1"></i> Tambah Supplier
+                    </a>
+                </div>
             </form>
         </div>
+    </div>
 
-        @if(session('success'))
-        <div class="bg-green-50 border-l-4 border-green-500 text-green-800 px-4 py-3 rounded mb-6">
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                <span>{{ session('success') }}</span>
+    <!-- Success Alert -->
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-check-circle me-2"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    <!-- Supplier Grid -->
+    <div class="row g-3 mb-4">
+        @forelse($suppliers as $s)
+        <div class="col-md-6 col-lg-6">
+            <div class="card border-0 shadow-sm h-100 border-start border-5 {{ $s->kategori->nama_kategori == 'Medis' ? 'border-success' : 'border-primary' }}">
+                <div class="card-body">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-start mb-3 pb-3 border-bottom">
+                        <div>
+                            <h5 class="card-title fw-bold mb-1">{{ $s->nama_supplier }}</h5>
+                            <p class="text-muted small mb-0">NIB: {{ $s->nib }}</p>
+                        </div>
+                        <span class="badge {{ $s->kategori->nama_kategori == 'Medis' ? 'bg-success' : 'bg-primary' }} rounded-pill">
+                            {{ $s->kategori->nama_kategori }}
+                        </span>
+                    </div>
+
+                    <!-- Info Section -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-start mb-2">
+                            <i class="fas fa-boxes text-muted me-2 mt-1" style="width: 16px;"></i>
+                            <div class="flex-grow-1">
+                                <p class="text-muted small mb-0">Jenis Barang</p>
+                                <p class="fw-medium mb-0">{{ $s->jenisBarang->nama_jenis }}</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-2">
+                            <i class="fas fa-map-marker-alt text-muted me-2 mt-1" style="width: 16px;"></i>
+                            <div class="flex-grow-1">
+                                <p class="text-muted small mb-0">Alamat</p>
+                                <p class="fw-medium mb-0 text-truncate">{{ $s->alamat }}</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-phone text-muted me-2 mt-1" style="width: 16px;"></i>
+                            <div class="flex-grow-1">
+                                <p class="text-muted small mb-0">Kontak</p>
+                                <p class="fw-medium mb-0">{{ $s->kontak }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2 pt-3 border-top">
+                        <a href="{{ route('admin.suppliers.show', $s) }}"
+                           class="btn btn-sm btn-primary flex-fill">
+                            <i class="fas fa-eye me-1"></i> Detail
+                        </a>
+                        <a href="{{ route('admin.suppliers.edit', $s) }}"
+                           class="btn btn-sm btn-success flex-fill">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </a>
+                        <form action="{{ route('admin.suppliers.destroy', $s) }}" method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus supplier ini?')"
+                              class="flex-fill">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger w-100">
+                                <i class="fas fa-trash me-1"></i> Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        @endif
-
-        <!-- Supplier Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            @forelse($suppliers as $s)
-            <div class="bg-white rounded-lg shadow border border-gray-100 p-5 hover:shadow-md transition-shadow border-l-4 {{ $s->kategori->nama_kategori == 'Medis' ? 'border-l-green-500' : 'border-l-blue-500' }}">
-                <!-- Header -->
-                <div class="flex items-start justify-between mb-4 pb-4 border-b border-gray-100">
-                    <div>
-                        <h3 class="font-semibold text-gray-800 text-lg">{{ $s->nama_supplier }}</h3>
-                        <p class="text-xs text-gray-500 mt-0.5">NIB: {{ $s->nib }}</p>
+        @empty
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-building text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
                     </div>
-                    <span class="px-3 py-1 text-xs font-medium rounded-full {{ $s->kategori->nama_kategori == 'Medis' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
-                        {{ $s->kategori->nama_kategori }}
-                    </span>
-                </div>
-
-                <!-- Info Section -->
-                <div class="space-y-3 mb-4">
-                    <div class="flex gap-3 items-start">
-                        <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                        </svg>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs text-gray-500 mb-0.5">Jenis Barang</p>
-                            <p class="text-sm font-medium text-gray-800">{{ $s->jenisBarang->nama_jenis }}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3 items-start">
-                        <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs text-gray-500 mb-0.5">Alamat</p>
-                            <p class="text-sm font-medium text-gray-800 truncate">{{ $s->alamat }}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3 items-start">
-                        <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs text-gray-500 mb-0.5">Kontak</p>
-                            <p class="text-sm font-medium text-gray-800">{{ $s->kontak }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex gap-2 pt-4 border-t border-gray-100">
-                    <a href="{{ route('admin.suppliers.show', $s) }}"
-                       class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
-                        Detail
-                    </a>
-                    <a href="{{ route('admin.suppliers.edit', $s) }}"
-                       class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
-                        Edit
-                    </a>
-                    <form action="{{ route('admin.suppliers.destroy', $s) }}" method="POST"
-                          onsubmit="return confirm('Yakin ingin menghapus supplier ini?')" class="flex-1">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                                class="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2.5 rounded-lg text-sm font-medium transition-colors">
-                            Hapus
-                        </button>
-                    </form>
+                    <h5 class="fw-bold mb-2">Belum ada supplier</h5>
+                    <p class="text-muted mb-0">Klik tombol "Tambah Supplier" untuk menambahkan data</p>
                 </div>
             </div>
-            @empty
-            <div class="col-span-full bg-white rounded-lg shadow border border-gray-100 py-16">
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-medium text-gray-800 mb-1">Belum ada supplier</h3>
-                    <p class="text-gray-500 text-sm">Klik tombol "Tambah Supplier" untuk menambahkan data</p>
-                </div>
-            </div>
-            @endforelse
         </div>
+        @endforelse
+    </div>
 
-        <!-- Pagination -->
-        @if($suppliers->hasPages())
-            <div class="mt-6">
-                <div class="bg-white rounded-lg shadow-sm p-4">
-                    <div class="flex items-center justify-between">
-                        <div class="text-sm text-gray-600">
-                            Menampilkan {{ $suppliers->firstItem() }} - {{ $suppliers->lastItem() }} dari {{ $suppliers->total() }} data
-                        </div>
-                        <div class="flex gap-1">
-                            {{ $suppliers->appends(['kategori' => request('kategori'), 'search' => request('search')])->links() }}
-                        </div>
-                    </div>
+    <!-- Pagination -->
+    @if($suppliers->hasPages())
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div class="text-muted small">
+                    Menampilkan {{ $suppliers->firstItem() }} - {{ $suppliers->lastItem() }} dari {{ $suppliers->total() }} data
+                </div>
+                <div class="supplier-pagination">
+                    {{ $suppliers->appends(['kategori' => request('kategori'), 'search' => request('search')])->links() }}
                 </div>
             </div>
-        @endif
+        </div>
+    </div>
+    @endif
 </div>
+
+@push('styles')
+<style>
+    /* Card hover effects */
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Input styling */
+    .input-group-text {
+        border-right: 0;
+    }
+
+    /* Border styling */
+    .border-start.border-5 {
+        border-left-width: 4px !important;
+    }
+
+    /* Text truncate */
+    .text-truncate {
+        max-width: 100%;
+    }
+
+    /* Badge styling */
+    .badge.rounded-pill {
+        padding: 0.4em 0.8em;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* Button hover effects */
+    .btn {
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    /* Icon sizing */
+    .fas {
+        display: inline-block;
+    }
+
+    /* Pagination styling fix */
+    .supplier-pagination .pagination {
+        margin-bottom: 0;
+        gap: 0.25rem;
+    }
+
+    .supplier-pagination .page-link {
+        color: #0d6efd;
+        border-color: #dee2e6;
+        padding: 0.375rem 0.75rem;
+        min-width: 38px;
+        text-align: center;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+    }
+
+    .supplier-pagination .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+    }
+
+    .supplier-pagination .page-link:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+        color: #0d6efd;
+    }
+
+    /* Ukuran icon pagination lebih kecil */
+    .supplier-pagination svg,
+    .supplier-pagination i {
+        font-size: 0.875rem;
+        width: 1rem;
+        height: 1rem;
+    }
+
+    /* Sembunyikan teks Previous dan Next */
+    .supplier-pagination .page-link[rel="prev"],
+    .supplier-pagination .page-link[rel="next"] {
+        font-size: 0;
+        padding: 0.375rem 0.5rem;
+    }
+
+    .supplier-pagination .page-link[rel="prev"]::before {
+        content: "‹";
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+
+    .supplier-pagination .page-link[rel="next"]::before {
+        content: "›";
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+
+    /* Ensure proper spacing */
+    .row.g-3 {
+        margin-bottom: 1rem;
+    }
+</style>
+@endpush
 @endsection

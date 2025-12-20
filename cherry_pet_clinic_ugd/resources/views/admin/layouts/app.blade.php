@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Cherry Pet Clinic')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    {{-- Bootstrap 5 CSS --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     @stack('styles')
 </head>
-<body class="bg-gray-100">
+<body>
     <!-- Mobile Menu Toggle -->
     <button class="menu-toggle" id="menuToggle">
         <span></span>
@@ -33,42 +39,42 @@
         </div>
 
         <div class="menu">
-            <a href="" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
                 <span>Beranda</span>
             </a>
 
-            <a href="" class="menu-item {{ request()->routeIs('stok.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.stok_barang.index') }}" class="menu-item {{ request()->routeIs('admin.stok_barang.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                 </svg>
                 <span>Stok Barang</span>
             </a>
 
-            <a href="" class="menu-item {{ request()->routeIs('pengadaan.*') ? 'active' : '' }}">
+            <a href="#" class="menu-item {{ request()->routeIs('pengadaan.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
                 <span>Pengadaan Stok</span>
             </a>
 
-            <a href="" class="menu-item {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
+            <a href="#" class="menu-item {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
                 <span>Laporan</span>
             </a>
 
-            <a href="{{ route('admin.suppliers.index') }}" class="menu-item {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.suppliers.index') }}" class="menu-item {{ request()->routeIs('admin.suppliers.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 <span>Pemasok</span>
             </a>
 
-            <a href="{{ route('admin.kategori.index') }}" class="menu-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.kategori.index') }}" class="menu-item {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                 </svg>
@@ -92,10 +98,10 @@
             </div>
 
             <div class="user-profile">
-                <div class="user-avatar">{{ substr(Auth::user()->name ?? 'Admin', 0, 1) }}</div>
+                <div class="user-avatar">A</div>
                 <div class="user-info">
-                    <div class="user-name">{{ Auth::user()->name ?? 'Admin Name' }}</div>
-                    <div class="user-role">{{ Auth::user()->role ?? 'Administrator' }}</div>
+                    <div class="user-name">Admin Name</div>
+                    <div class="user-role">Administrator</div>
                 </div>
             </div>
         </div>
@@ -121,6 +127,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
         }
 
         .menu-toggle {
@@ -368,6 +375,36 @@
             padding: 25px;
         }
 
+        /* Bootstrap Overrides & Enhancements */
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .form-control, .form-select {
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #0066B3;
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 179, 0.25);
+        }
+
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .alert {
+            border-radius: 8px;
+        }
+
+        .table {
+            font-size: 14px;
+        }
+
         @media (max-width: 768px) {
             .menu-toggle {
                 display: flex;
@@ -415,6 +452,9 @@
             }
         });
     </script>
+
+    {{-- Bootstrap JS Bundle (includes Popper) --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')
 </body>

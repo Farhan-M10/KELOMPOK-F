@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Tambah Jenis Barang')
 @section('page-title', 'Tambah Jenis Barang')
@@ -8,9 +8,9 @@
     <!-- Breadcrumb -->
     <div class="mb-6">
         <div class="flex items-center gap-2 text-sm text-gray-600">
-            <a href="{{ route('kategoris.index') }}" class="hover:text-blue-600">Kategori</a>
+            <a href="{{ route('admin.kategori.index') }}" class="hover:text-blue-600">Kategori</a>
             <span>›</span>
-            <a href="{{ route('jenis-barangs.index') }}" class="hover:text-blue-600">Jenis Barang</a>
+            <a href="{{ route('admin.jenis_barang.index') }}" class="hover:text-blue-600">Jenis Barang</a>
             <span>›</span>
             <span class="text-gray-800 font-medium">Tambah Baru</span>
         </div>
@@ -25,7 +25,7 @@
         </div>
 
         <!-- Form Body -->
-        <form action="{{ route('jenis-barangs.store') }}" method="POST" class="p-6">
+        <form action="{{ route('admin.jenis_barang.store') }}" method="POST" class="p-6">
             @csrf
 
             <!-- Kategori -->
@@ -109,7 +109,7 @@
                     </svg>
                     Simpan Data
                 </button>
-                <a href="{{ route('jenis-barangs.index', ['kategori_id' => request('kategori_id')]) }}"
+                <a href="{{ route('admin.jenis_barang.index', ['kategori_id' => request('kategori_id')]) }}"
                     class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
