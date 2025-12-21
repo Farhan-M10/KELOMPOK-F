@@ -7,6 +7,10 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\PengadaanController;
+
+
+
 
 // ==========================================
 // ROUTE LOGIN
@@ -65,9 +69,24 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::delete('/{id}', [BarangController::class, 'destroy'])->name('destroy');
         Route::post('/{id}/batch', [BarangController::class, 'addBatch'])->name('add-batch');
         Route::get('/export', [BarangController::class, 'export'])->name('export');
+        });
+
     });
 
-});
+// Pengadaan Routes
+Route::resource('pengadaan', PengadaanController::class);
+Route::post('pengadaan/{id}/update-status', [PengadaanController::class, 'updateStatus'])->name('pengadaan.updateStatus');
+Route::get('pengadaan/get-harga-barang/{id}', [PengadaanController::class, 'getHargaBarang'])->name('pengadaan.getHargaBarang');
+// Route::prefix('pengadaan')->name('pengadaan.')->group(function () {
+//     Route::get('/', [PengadaanController::class, 'index'])->name('index');
+//     Route::get('/create', [PengadaanController::class, 'create'])->name('create');
+//     Route::post('/', [PengadaanController::class, 'store'])->name('store');
+//     Route::get('/{id}', [PengadaanController::class, 'show'])->name('show');
+//     Route::get('/{id}/edit', [PengadaanController::class, 'edit'])->name('edit');
+//     Route::put('/{id}', [PengadaanController::class, 'update'])->name('update');
+//     Route::delete('/{id}', [PengadaanController::class, 'destroy'])->name('destroy');
+//     Route::patch('/{id}/status', [PengadaanController::class, 'updateStatus'])->name('update-status');
+// });
 
 // ==========================================
 // ROUTE STAFF
