@@ -34,14 +34,14 @@ class JenisBarangController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategoris,id',
-            'kode_jenis' => 'required|unique:jenis_barangs,kode_jenis|max:50',
+            //'kode_jenis' => 'required|unique:jenis_barangs,kode_jenis|max:50',
             'nama_jenis' => 'required|max:100',
             'deskripsi' => 'nullable|string'
         ]);
 
         JenisBarang::create($validated);
 
-        return redirect()->route('admin_jenis_barang.index')
+        return redirect()->route('admin.jenis_barang.index')
             ->with('success', 'Jenis barang berhasil ditambahkan');
     }
 
@@ -61,7 +61,7 @@ class JenisBarangController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategoris,id',
-            'kode_jenis' => 'required|max:50|unique:jenis_barangs,kode_jenis,' . $jenisBarang->id,
+            //'kode_jenis' => 'required|max:50|unique:jenis_barangs,kode_jenis,' . $jenisBarang->id,
             'nama_jenis' => 'required|max:100',
             'deskripsi' => 'nullable|string'
         ]);

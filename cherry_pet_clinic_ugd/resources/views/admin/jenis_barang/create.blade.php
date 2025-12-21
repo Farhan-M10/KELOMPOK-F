@@ -4,137 +4,281 @@
 @section('page-title', 'Tambah Jenis Barang')
 
 @section('content')
-<div class="max-w-3xl mx-auto">
-    <!-- Breadcrumb -->
-    <div class="mb-6">
-        <div class="flex items-center gap-2 text-sm text-gray-600">
-            <a href="{{ route('admin.kategori.index') }}" class="hover:text-blue-600">Kategori</a>
-            <span>›</span>
-            <a href="{{ route('admin.jenis_barang.index') }}" class="hover:text-blue-600">Jenis Barang</a>
-            <span>›</span>
-            <span class="text-gray-800 font-medium">Tambah Baru</span>
-        </div>
-    </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('admin.kategori.index') }}" class="text-decoration-none">
+                            <i class="fas fa-tags me-1"></i> Kategori
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('admin.jenis_barang.index') }}" class="text-decoration-none">
+                            <i class="fas fa-boxes me-1"></i> Jenis Barang
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Tambah Baru</li>
+                </ol>
+            </nav>
 
-    <!-- Form Card -->
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5">
-            <h2 class="text-xl font-bold text-white">Tambah Jenis Barang Baru</h2>
-            <p class="text-blue-100 text-sm mt-1">Lengkapi informasi jenis barang</p>
-        </div>
+            <!-- Form Card -->
+            <div class="card border-0 shadow-sm">
+                <!-- Header -->
+                <div class="card-header bg-primary text-white border-0 py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-white bg-opacity-25 p-2 me-3">
+                            <i class="fas fa-plus-circle fs-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1 fw-bold">Tambah Jenis Barang Baru</h4>
+                            <p class="mb-0 small opacity-75">Lengkapi informasi jenis barang</p>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Form Body -->
-        <form action="{{ route('admin.jenis_barang.store') }}" method="POST" class="p-6">
-            @csrf
+                <!-- Form Body -->
+                <div class="card-body p-4">
+                    <form action="{{ route('admin.jenis_barang.store') }}" method="POST">
+                        @csrf
 
-            <!-- Kategori -->
-            <div class="mb-6">
-                <label for="kategori_id" class="block text-sm font-semibold text-gray-700 mb-2">
-                    Kategori <span class="text-red-500">*</span>
-                </label>
-                <select name="kategori_id" id="kategori_id"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all @error('kategori_id') border-red-500 @enderror"
-                    required>
-                    <option value="">Pilih Kategori</option>
-                    @foreach($kategoris as $kategori)
-                        <option value="{{ $kategori->id }}"
-                            {{ old('kategori_id', request('kategori_id')) == $kategori->id ? 'selected' : '' }}>
-                            {{ $kategori->nama_kategori }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('kategori_id')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
+                        <!-- Kategori -->
+                        <div class="mb-4">
+                            <label for="kategori_id" class="form-label fw-semibold">
+                                Kategori <span class="text-danger">*</span>
+                            </label>
+                            <select name="kategori_id"
+                                    id="kategori_id"
+                                    class="form-select form-select-lg @error('kategori_id') is-invalid @enderror"
+                                    required>
+                                <option value="">Pilih Kategori</option>
+                                @foreach($kategoris as $kategori)
+                                    <option value="{{ $kategori->id }}"
+                                        {{ old('kategori_id', request('kategori_id')) == $kategori->id ? 'selected' : '' }}>
+                                        {{ $kategori->nama_kategori }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('kategori_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Kode Jenis -->
+                        {{-- <div class="mb-4">
+                            <label for="kode_jenis" class="form-label fw-semibold">
+                                Kode Jenis <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                   name="kode_jenis"
+                                   id="kode_jenis"
+                                   value="{{ old('kode_jenis') }}"
+                                   placeholder="Contoh: OB123456"
+                                   class="form-control form-control-lg @error('kode_jenis') is-invalid @enderror"
+                                   style="font-family: 'Courier New', monospace;"
+                                   required>
+                            @error('kode_jenis')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Kode unik untuk identifikasi jenis barang
+                            </div>
+                        </div> --}}
+
+                        <!-- Nama Jenis -->
+                        <div class="mb-4">
+                            <label for="nama_jenis" class="form-label fw-semibold">
+                                Nama Jenis <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                   name="nama_jenis"
+                                   id="nama_jenis"
+                                   value="{{ old('nama_jenis') }}"
+                                   placeholder="Contoh: Obat Hewan"
+                                   class="form-control form-control-lg @error('nama_jenis') is-invalid @enderror"
+                                   required>
+                            @error('nama_jenis')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Deskripsi -->
+                        <div class="mb-4">
+                            <label for="deskripsi" class="form-label fw-semibold">
+                                Deskripsi
+                            </label>
+                            <textarea name="deskripsi"
+                                      id="deskripsi"
+                                      rows="4"
+                                      placeholder="Deskripsi singkat tentang jenis barang ini..."
+                                      class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi') }}</textarea>
+                            @error('deskripsi')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Opsional - Tambahkan deskripsi untuk informasi lebih detail
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 pt-4 border-top">
+                            <button type="submit" class="btn btn-primary btn-lg flex-fill">
+                                <i class="fas fa-save me-2"></i>
+                                Simpan Data
+                            </button>
+                            <a href="{{ route('admin.jenis_barang.index', ['kategori_id' => request('kategori_id')]) }}"
+                               class="btn btn-secondary btn-lg flex-fill">
+                                <i class="fas fa-times me-2"></i>
+                                Batal
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <!-- Kode Jenis -->
-            <div class="mb-6">
-                <label for="kode_jenis" class="block text-sm font-semibold text-gray-700 mb-2">
-                    Kode Jenis <span class="text-red-500">*</span>
-                </label>
-                <input type="text"
-                    name="kode_jenis"
-                    id="kode_jenis"
-                    value="{{ old('kode_jenis') }}"
-                    placeholder="Contoh: OB123456"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-mono @error('kode_jenis') border-red-500 @enderror"
-                    required>
-                @error('kode_jenis')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-                <p class="mt-1 text-xs text-gray-500">Kode unik untuk identifikasi jenis barang</p>
-            </div>
-
-            <!-- Nama Jenis -->
-            <div class="mb-6">
-                <label for="nama_jenis" class="block text-sm font-semibold text-gray-700 mb-2">
-                    Nama Jenis <span class="text-red-500">*</span>
-                </label>
-                <input type="text"
-                    name="nama_jenis"
-                    id="nama_jenis"
-                    value="{{ old('nama_jenis') }}"
-                    placeholder="Contoh: Obat Hewan"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all @error('nama_jenis') border-red-500 @enderror"
-                    required>
-                @error('nama_jenis')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Deskripsi -->
-            <div class="mb-6">
-                <label for="deskripsi" class="block text-sm font-semibold text-gray-700 mb-2">
-                    Deskripsi
-                </label>
-                <textarea
-                    name="deskripsi"
-                    id="deskripsi"
-                    rows="4"
-                    placeholder="Deskripsi singkat tentang jenis barang ini..."
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none @error('deskripsi') border-red-500 @enderror">{{ old('deskripsi') }}</textarea>
-                @error('deskripsi')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center gap-3 pt-6 border-t border-gray-200">
-                <button type="submit"
-                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-sm flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Simpan Data
-                </button>
-                <a href="{{ route('admin.jenis_barang.index', ['kategori_id' => request('kategori_id')]) }}"
-                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                    Batal
-                </a>
-            </div>
-        </form>
-    </div>
-
-    <!-- Info Card -->
-    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div class="flex gap-3">
-            <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-            </svg>
-            <div class="text-sm text-blue-800">
-                <p class="font-semibold mb-1">Informasi:</p>
-                <ul class="list-disc list-inside space-y-1 text-blue-700">
-                    <li>Kode jenis harus unik dan tidak boleh sama dengan jenis barang lain</li>
-                    <li>Pastikan memilih kategori yang sesuai dengan jenis barang</li>
-                    <li>Deskripsi bersifat opsional namun disarankan untuk diisi</li>
-                </ul>
+            <!-- Info Card -->
+            <div class="alert alert-info mt-4" role="alert">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="alert-heading fw-bold mb-2">
+                            <i class="fas fa-lightbulb me-1"></i>
+                            Informasi Penting
+                        </h6>
+                        <ul class="mb-0 small">
+                            {{-- <li class="mb-1">Kode jenis harus unik dan tidak boleh sama dengan jenis barang lain</li> --}}
+                            <li class="mb-1">Pastikan memilih kategori yang sesuai dengan jenis barang</li>
+                            <li class="mb-0">Deskripsi bersifat opsional namun disarankan untuk diisi</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        font-weight: bold;
+    }
+
+    .card {
+        border-radius: 0.75rem;
+        overflow: hidden;
+    }
+
+    .card-header {
+        border-radius: 0.75rem 0.75rem 0 0 !important;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+
+    .form-control-lg,
+    .form-select-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+
+    .btn {
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .alert {
+        border-radius: 0.5rem;
+        border: none;
+    }
+
+    .alert-info {
+        background-color: #cfe2ff;
+        color: #084298;
+    }
+
+    .invalid-feedback {
+        display: block;
+        margin-top: 0.25rem;
+    }
+
+    .form-text {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .d-flex.gap-2 {
+            flex-direction: column;
+        }
+
+        .btn-lg {
+            padding: 0.75rem 1rem;
+        }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-focus pada field pertama
+        const firstInput = document.getElementById('kategori_id');
+        if (firstInput) {
+            firstInput.focus();
+        }
+
+        // Format kode jenis menjadi uppercase
+        // const kodeJenisInput = document.getElementById('kode_jenis');
+        // if (kodeJenisInput) {
+        //     kodeJenisInput.addEventListener('input', function(e) {
+        //         this.value = this.value.toUpperCase();
+        //     });
+        // }
+
+        // Konfirmasi sebelum kembali jika ada perubahan
+        const form = document.querySelector('form');
+        const btnBatal = document.querySelector('.btn-secondary');
+        let formChanged = false;
+
+        form.addEventListener('input', function() {
+            formChanged = true;
+        });
+
+        btnBatal.addEventListener('click', function(e) {
+            if (formChanged) {
+                if (!confirm('Ada perubahan yang belum disimpan. Yakin ingin membatalkan?')) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Validasi form sebelum submit
+        form.addEventListener('submit', function(e) {
+            const kategoriId = document.getElementById('kategori_id').value;
+            const kodeJenis = document.getElementById('kode_jenis').value;
+            const namaJenis = document.getElementById('nama_jenis').value;
+
+            if (!kategoriId || !kodeJenis || !namaJenis) {
+                e.preventDefault();
+                alert('Mohon lengkapi semua field yang wajib diisi (*)');
+                return false;
+            }
+        });
+    });
+</script>
+@endpush
 @endsection
