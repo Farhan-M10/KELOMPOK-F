@@ -3,251 +3,424 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container-fluid" style="max-width: 900px;">
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-            <form action="{{ route('admin.stok_barang.store') }}" method="POST" id="formBarang">
-                @csrf
+<div class="container-fluid" style="background-color: #E8F4F8; min-height: 100vh; padding: 2rem 0;">
+    <div style="max-width: 900px; margin: 0 auto;">
 
-                {{-- Nama Barang --}}
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="{{ route('admin.stok_barang.index') }}" class="btn btn-link text-decoration-none p-0 text-primary-custom">
+                <i class="fas fa-arrow-left me-2"></i> Kembali
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <!-- Header -->
                 <div class="mb-4">
-                    <label class="form-label fw-bold">Nama Barang <span class="text-danger">*</span></label>
-                    <input type="text" name="nama_barang"
-                           class="form-control form-control-lg @error('nama_barang') is-invalid @enderror"
-                           value="{{ old('nama_barang') }}"
-                           placeholder="Amoxicillin 500mg"
-                           required>
-                    @error('nama_barang')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <h4 class="fw-bold text-dark mb-1">Tambah Barang Baru</h4>
+                    <p class="text-secondary small mb-0">Lengkapi form di bawah untuk menambahkan barang baru ke stok</p>
                 </div>
 
-                <div class="row mb-4">
-                    {{-- Kategori --}}
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Kategori <span class="text-danger">*</span></label>
-                        <select name="kategori_id" class="form-select form-select-lg @error('kategori_id') is-invalid @enderror" required>
-                            <option value="">Semua Kategori</option>
-                            @foreach($kategoris as $kategori)
-                            <option value="{{ $kategori->id }}" {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}>
-                                {{ $kategori->nama_kategori }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('kategori_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <form action="{{ route('admin.stok_barang.store') }}" method="POST" id="formBarang">
+                    @csrf
 
-                    {{-- Jenis Barang --}}
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Jenis Barang <span class="text-danger">*</span></label>
-                        <select name="jenis_barang_id" class="form-select form-select-lg @error('jenis_barang_id') is-invalid @enderror" required>
-                            <option value="">Pilih Kategori</option>
-                            @foreach($jenisBarangs as $jenis)
-                            <option value="{{ $jenis->id }}" {{ old('jenis_barang_id') == $jenis->id ? 'selected' : '' }}>
-                                {{ $jenis->nama_jenis }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('jenis_barang_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    {{-- Lokasi Penyimpanan --}}
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Lokasi Penyimpanan <span class="text-danger">*</span></label>
-                        <select name="lokasi" class="form-select form-select-lg @error('lokasi') is-invalid @enderror" required>
-                            <option value="">Semua Lokasi</option>
-                            <option value="Rak A" {{ old('lokasi') == 'Rak A' ? 'selected' : '' }}>Rak A</option>
-                            <option value="Rak B" {{ old('lokasi') == 'Rak B' ? 'selected' : '' }}>Rak B</option>
-                            <option value="Kulkas E" {{ old('lokasi') == 'Kulkas E' ? 'selected' : '' }}>Kulkas E</option>
-                            <option value="Kulkas V" {{ old('lokasi') == 'Kulkas V' ? 'selected' : '' }}>Kulkas V</option>
-                        </select>
-                        @error('lokasi')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    {{-- Ruangan --}}
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Ruangan <span class="text-danger">*</span></label>
-                        <input type="text" name="ruangan"
-                               class="form-control form-control-lg @error('ruangan') is-invalid @enderror"
-                               value="{{ old('ruangan') }}"
-                               placeholder="Ruang Display Lt. 1"
+                    {{-- Nama Barang --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-dark">
+                            Nama Barang <span class="text-danger-custom">*</span>
+                        </label>
+                        <input type="text" name="nama_barang"
+                               class="form-control form-control-lg border-custom @error('nama_barang') is-invalid @enderror"
+                               value="{{ old('nama_barang') }}"
+                               placeholder="Amoxicillin 500mg"
                                required>
-                        @error('ruangan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    {{-- Satuan --}}
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Satuan</label>
-                        <select name="satuan" class="form-select form-select-lg @error('satuan') is-invalid @enderror">
-                            <option value="box" {{ old('satuan') == 'box' ? 'selected' : '' }}>box</option>
-                            <option value="vial" {{ old('satuan') == 'vial' ? 'selected' : '' }}>vial</option>
-                            <option value="botol" {{ old('satuan') == 'botol' ? 'selected' : '' }}>botol</option>
-                            <option value="unit" {{ old('satuan') == 'unit' ? 'selected' : '' }}>unit</option>
-                            <option value="ampul" {{ old('satuan') == 'ampul' ? 'selected' : '' }}>ampul</option>
-                            <option value="pcs" {{ old('satuan') == 'pcs' ? 'selected' : '' }}>pcs</option>
-                        </select>
-                        @error('satuan')
+                        @error('nama_barang')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    {{-- Stok Minimum --}}
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Stok Minimum</label>
-                        <input type="number" name="stok_minimum"
-                               class="form-control form-control-lg @error('stok_minimum') is-invalid @enderror"
-                               value="{{ old('stok_minimum', 10) }}"
-                               placeholder="10"
-                               min="0">
-                        <small class="text-primary">Alert akan muncul jika stok di bawah nilai ini</small>
-                        @error('stok_minimum')
+                    <div class="row mb-4">
+                        {{-- Kategori --}}
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                Kategori <span class="text-danger-custom">*</span>
+                            </label>
+                            <select name="kategori_id" class="form-select form-select-lg border-custom @error('kategori_id') is-invalid @enderror" required>
+                                <option value="">Semua Kategori</option>
+                                @foreach($kategoris as $kategori)
+                                <option value="{{ $kategori->id }}" {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}>
+                                    {{ $kategori->nama_kategori }}
+                                </option>
+                                @endforeach
+                            </select>
+                            @error('kategori_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Jenis Barang --}}
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                Jenis Barang <span class="text-danger-custom">*</span>
+                            </label>
+                            <select name="jenis_barang_id" class="form-select form-select-lg border-custom @error('jenis_barang_id') is-invalid @enderror" required>
+                                <option value="">Pilih Kategori</option>
+                                @foreach($jenisBarangs as $jenis)
+                                <option value="{{ $jenis->id }}" {{ old('jenis_barang_id') == $jenis->id ? 'selected' : '' }}>
+                                    {{ $jenis->nama_jenis }}
+                                </option>
+                                @endforeach
+                            </select>
+                            @error('jenis_barang_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        {{-- Lokasi Penyimpanan --}}
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                Lokasi Penyimpanan <span class="text-danger-custom">*</span>
+                            </label>
+                            <select name="lokasi" class="form-select form-select-lg border-custom @error('lokasi') is-invalid @enderror" required>
+                                <option value="">Semua Lokasi</option>
+                                <option value="Rak A" {{ old('lokasi') == 'Rak A' ? 'selected' : '' }}>Rak A</option>
+                                <option value="Rak B" {{ old('lokasi') == 'Rak B' ? 'selected' : '' }}>Rak B</option>
+                                <option value="Kulkas E" {{ old('lokasi') == 'Kulkas E' ? 'selected' : '' }}>Kulkas E</option>
+                                <option value="Kulkas V" {{ old('lokasi') == 'Kulkas V' ? 'selected' : '' }}>Kulkas V</option>
+                            </select>
+                            @error('lokasi')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Ruangan --}}
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                Ruangan <span class="text-danger-custom">*</span>
+                            </label>
+                            <input type="text" name="ruangan"
+                                   class="form-control form-control-lg border-custom @error('ruangan') is-invalid @enderror"
+                                   value="{{ old('ruangan') }}"
+                                   placeholder="Ruang Display Lt. 1"
+                                   required>
+                            @error('ruangan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        {{-- Satuan --}}
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Satuan</label>
+                            <select name="satuan" class="form-select form-select-lg border-custom @error('satuan') is-invalid @enderror">
+                                <option value="box" {{ old('satuan') == 'box' ? 'selected' : '' }}>box</option>
+                                <option value="vial" {{ old('satuan') == 'vial' ? 'selected' : '' }}>vial</option>
+                                <option value="botol" {{ old('satuan') == 'botol' ? 'selected' : '' }}>botol</option>
+                                <option value="unit" {{ old('satuan') == 'unit' ? 'selected' : '' }}>unit</option>
+                                <option value="ampul" {{ old('satuan') == 'ampul' ? 'selected' : '' }}>ampul</option>
+                                <option value="pcs" {{ old('satuan') == 'pcs' ? 'selected' : '' }}>pcs</option>
+                            </select>
+                            @error('satuan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Stok Minimum --}}
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Stok Minimum</label>
+                            <input type="number" name="stok_minimum"
+                                   class="form-control form-control-lg border-custom @error('stok_minimum') is-invalid @enderror"
+                                   value="{{ old('stok_minimum', 10) }}"
+                                   placeholder="10"
+                                   min="0">
+                            <small class="text-primary-custom">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Alert akan muncul jika stok di bawah nilai ini
+                            </small>
+                            @error('stok_minimum')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- Deskripsi Barang --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-dark">Deskripsi Barang</label>
+                        <textarea name="deskripsi"
+                                  class="form-control border-custom @error('deskripsi') is-invalid @enderror"
+                                  rows="3"
+                                  style="resize: none;"
+                                  placeholder="Masukan deskripsi, kegunaan, cara penggunaan, atau informasi yang relevan...">{{ old('deskripsi') }}</textarea>
+                        @error('deskripsi')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
 
-                {{-- Deskripsi Barang --}}
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Deskripsi Barang</label>
-                    <textarea name="deskripsi"
-                              class="form-control @error('deskripsi') is-invalid @enderror"
-                              rows="3"
-                              style="resize: none;"
-                              placeholder="Masukan deskripsi, kegunaan, cara penggunaan, atau informasi yang relevan...">{{ old('deskripsi') }}</textarea>
-                    @error('deskripsi')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+                    <hr class="my-4 border-light-custom">
 
-                <hr class="my-4">
+                    {{-- Data Batch Section --}}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0 fw-bold text-dark">Data Batch</h5>
+                        <button type="button" class="btn btn-link text-decoration-none text-primary-custom" id="btnTambahBatch">
+                            <i class="fas fa-plus-circle me-1"></i> Tambah barang
+                        </button>
+                    </div>
 
-                {{-- Data Batch Section --}}
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0 fw-bold">Data Batch</h5>
-                    <button type="button" class="btn btn-link text-decoration-none" id="btnTambahBatch">
-                        <i class="fas fa-plus-circle me-1"></i> Tambah barang
-                    </button>
-                </div>
-
-                <div id="batchContainer">
-                    {{-- Batch Item Template --}}
-                    <div class="batch-item mb-3 p-3 bg-light rounded position-relative">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0 text-primary fw-bold">Batch #1</h6>
-                            <button type="button" class="btn btn-sm btn-light text-danger btn-hapus-batch border-0" style="display: none;">
-                                Hapus
-                            </button>
-                        </div>
-
-                        <div class="row mb-3">
-                            {{-- Nomor Batch --}}
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Nomor Batch <span class="text-danger">*</span></label>
-                                <input type="text" name="batches[0][nomor_batch]"
-                                       class="form-control"
-                                       placeholder="B-240915"
-                                       required>
+                    <div id="batchContainer">
+                        {{-- Batch Item Template --}}
+                        <div class="batch-item mb-3 p-3 bg-light-batch rounded position-relative">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0 text-primary-custom fw-bold">Batch #1</h6>
+                                <button type="button" class="btn btn-sm btn-hapus-batch border-0" style="display: none;">
+                                    <i class="fas fa-trash me-1"></i> Hapus
+                                </button>
                             </div>
 
-                            {{-- Jumlah --}}
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Jumlah <span class="text-danger">*</span></label>
-                                <input type="number" name="batches[0][jumlah]"
-                                       class="form-control"
-                                       placeholder="15"
-                                       min="1"
-                                       required>
-                            </div>
-                        </div>
+                            <div class="row mb-3">
+                                {{-- Nomor Batch --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-dark">
+                                        Nomor Batch <span class="text-danger-custom">*</span>
+                                    </label>
+                                    <input type="text" name="batches[0][nomor_batch]"
+                                           class="form-control border-custom"
+                                           placeholder="B-240915"
+                                           required>
+                                </div>
 
-                        <div class="row">
-                            {{-- Tanggal Masuk --}}
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tanggal Masuk <span class="text-danger">*</span></label>
-                                <input type="date" name="batches[0][tanggal_masuk]"
-                                       class="form-control"
-                                       required>
+                                {{-- Jumlah --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-dark">
+                                        Jumlah <span class="text-danger-custom">*</span>
+                                    </label>
+                                    <input type="number" name="batches[0][jumlah]"
+                                           class="form-control border-custom"
+                                           placeholder="15"
+                                           min="1"
+                                           required>
+                                </div>
                             </div>
 
-                            {{-- Tanggal Kadaluarsa --}}
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tanggal Kadaluarsa <span class="text-danger">*</span></label>
-                                <input type="date" name="batches[0][tanggal_kadaluarsa]"
-                                       class="form-control"
-                                       required>
+                            <div class="row">
+                                {{-- Tanggal Masuk --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-dark">
+                                        Tanggal Masuk <span class="text-danger-custom">*</span>
+                                    </label>
+                                    <input type="date" name="batches[0][tanggal_masuk]"
+                                           class="form-control border-custom"
+                                           required>
+                                </div>
+
+                                {{-- Tanggal Kadaluarsa --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-dark">
+                                        Tanggal Kadaluarsa <span class="text-danger-custom">*</span>
+                                    </label>
+                                    <input type="date" name="batches[0][tanggal_kadaluarsa]"
+                                           class="form-control border-custom"
+                                           required>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <hr class="my-4">
+                    <hr class="my-4 border-light-custom">
 
-                {{-- Action Buttons --}}
-                <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('admin.stok_barang.index') }}" class="btn btn-lg btn-light px-4">
-                        Batal
-                    </a>
-                    <button type="submit" class="btn btn-lg btn-primary px-4">
-                        Tambah barang
-                    </button>
-                </div>
-            </form>
+                    {{-- Action Buttons --}}
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ route('admin.stok_barang.index') }}" class="btn btn-lg btn-secondary-custom px-4">
+                            <i class="fas fa-times me-2"></i> Batal
+                        </a>
+                        <button type="submit" class="btn btn-lg btn-danger-custom px-4">
+                            <i class="fas fa-save me-2"></i> Tambah barang
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 @push('styles')
 <style>
+    /* Color Variables */
+    :root {
+        --primary-dark: #003D7A;
+        --primary-medium: #0066B3;
+        --error-color: #E31E24;
+        --error-hover: #FF4444;
+        --success-color: #1FBD88;
+        --warning-color: #F59E0B;
+        --bg-light: #F5F7FA;
+        --bg-very-light: #E8F4F8;
+        --text-dark: #1A1A1A;
+        --text-secondary: #424242;
+        --text-medium: #757575;
+        --text-light: #BDBDBD;
+        --border-normal: #D0D0D0;
+        --border-light: #E0E0E0;
+    }
+
+    /* Body Background */
+    body {
+        background-color: var(--bg-very-light) !important;
+    }
+
+    /* Text Colors */
+    .text-dark {
+        color: var(--text-dark) !important;
+    }
+
+    .text-secondary {
+        color: var(--text-secondary) !important;
+    }
+
+    .text-primary-custom {
+        color: var(--primary-medium) !important;
+    }
+
+    .text-danger-custom {
+        color: var(--error-color) !important;
+    }
+
+    /* Border Colors */
+    .border-custom {
+        border-color: var(--border-normal) !important;
+    }
+
+    .border-light-custom {
+        border-color: var(--border-light) !important;
+    }
+
+    /* Form Controls */
     .form-control, .form-select {
-        border: 1px solid #dee2e6;
+        background-color: var(--bg-light);
+        border: 1px solid var(--border-normal);
         padding: 0.625rem 0.875rem;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
     }
 
     .form-control:focus, .form-select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+        background-color: white;
+        border-color: var(--primary-medium);
+        box-shadow: 0 0 0 0.25rem rgba(0, 102, 179, 0.15);
     }
 
+    .form-control::placeholder {
+        color: var(--text-light);
+    }
+
+    /* Form Label */
     .form-label {
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
-        color: #212529;
+        color: var(--text-dark);
+        font-weight: 600;
+    }
+
+    /* Invalid Feedback */
+    .invalid-feedback {
+        display: block;
+        color: var(--error-color);
+    }
+
+    .is-invalid {
+        border-color: var(--error-color) !important;
+    }
+
+    .is-invalid:focus {
+        box-shadow: 0 0 0 0.25rem rgba(227, 30, 36, 0.15) !important;
+    }
+
+    /* Batch Item */
+    .bg-light-batch {
+        background-color: var(--bg-light) !important;
     }
 
     .batch-item {
-        border: 1px solid #e9ecef;
+        border: 1px solid var(--border-light);
         transition: all 0.2s;
     }
 
     .batch-item:hover {
-        border-color: #dee2e6;
+        border-color: var(--border-normal);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .btn-hapus-batch {
-        background-color: #ffe5e5;
-        color: #dc3545;
+        background-color: var(--error-color);
+        color: white;
         font-size: 0.875rem;
         padding: 0.375rem 0.75rem;
+        transition: all 0.2s ease;
     }
 
     .btn-hapus-batch:hover {
-        background-color: #ffcccc;
+        background-color: var(--error-hover);
+        transform: translateY(-1px);
     }
 
+    /* Buttons */
+    .btn {
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+
+    .btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-secondary-custom {
+        background-color: var(--text-medium);
+        border-color: var(--text-medium);
+        color: white;
+    }
+
+    .btn-secondary-custom:hover {
+        background-color: var(--text-secondary);
+        border-color: var(--text-secondary);
+        color: white;
+    }
+
+    .btn-danger-custom {
+        background-color: var(--error-color);
+        border-color: var(--error-color);
+        color: white;
+    }
+
+    .btn-danger-custom:hover {
+        background-color: var(--error-hover);
+        border-color: var(--error-hover);
+        color: white;
+    }
+
+    .btn-link {
+        font-weight: 500;
+    }
+
+    .btn-link:hover {
+        text-decoration: underline !important;
+    }
+
+    /* Card */
+    .card {
+        background-color: white;
+    }
+
+    /* Date Input */
     input[type="date"]::-webkit-calendar-picker-indicator {
         cursor: pointer;
+    }
+
+    /* Small Text */
+    small {
+        font-size: 0.875rem;
     }
 </style>
 @endpush

@@ -3,7 +3,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="background-color: #E8F4F8; min-height: 100vh; padding: 20px;">
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -87,12 +87,6 @@
                     </div>
 
                     <div class="col-md-3 text-end">
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <a href="{{ route('admin.stok_barang.index', ['jenis_tab' => request('jenis_tab', 'medis')]) }}" class="btn btn-secondary btn-sm">
-                            <i class="fas fa-redo"></i>
-                        </a>
                         <a href="{{ route('admin.stok_barang.export') }}" class="btn btn-success btn-sm">
                             <i class="fas fa-download"></i> Export
                         </a>
@@ -201,47 +195,110 @@
 
 @push('styles')
 <style>
+/* Background keseluruhan */
+body {
+    background-color: #E8F4F8 !important;
+}
+
+/* Custom Tabs dengan warna baru */
 .custom-tabs {
     border-bottom: none;
 }
 
 .custom-tabs .nav-link {
-    color: #6c757d;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    color: #757575;
+    background-color: #F5F7FA;
+    border: 1px solid #E0E0E0;
     font-weight: 500;
     border-radius: 8px 8px 0 0;
     padding: 15px;
+    transition: all 0.3s ease;
 }
 
 .custom-tabs .nav-link.active {
-    color: #ffffff;
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #003D7A 0%, #0066B3 100%);
+    border-color: #003D7A;
 }
 
 .custom-tabs .nav-link:hover:not(.active) {
-    background-color: #e9ecef;
+    background-color: #E8F4F8;
+    color: #0066B3;
 }
 
+/* Form controls dengan warna baru */
+.form-control, .form-select {
+    background-color: #F5F7FA;
+    border: 1px solid #D0D0D0;
+    color: #1A1A1A;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #FFFFFF;
+    border-color: #0066B3;
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 179, 0.15);
+}
+
+.form-control::placeholder {
+    color: #BDBDBD;
+}
+
+/* Tombol Success (Export) */
+.btn-success {
+    background-color: #1FBD88;
+    border-color: #1FBD88;
+    color: #FFFFFF;
+}
+
+.btn-success:hover {
+    background-color: #19a577;
+    border-color: #19a577;
+}
+
+/* Tombol Danger (Tambah barang) */
+.btn-danger {
+    background-color: #E31E24;
+    border-color: #E31E24;
+    color: #FFFFFF;
+}
+
+.btn-danger:hover {
+    background-color: #FF4444;
+    border-color: #FF4444;
+}
+
+/* Card styling */
+.card {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+}
+
+/* Table styling */
 .stok-table {
     border-collapse: separate;
     border-spacing: 0;
 }
 
 .table-header-custom {
-    background-color: #e8f4f8;
-    border-bottom: 2px solid #dee2e6;
+    background-color: #E8F4F8;
+    border-bottom: 2px solid #D0D0D0;
 }
 
 .th-padding {
     padding: 12px 15px;
     font-weight: 600;
     font-size: 0.85rem;
+    color: #003D7A;
 }
 
 .table-row-custom {
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #E0E0E0;
+    transition: background-color 0.2s ease;
+}
+
+.table-row-custom:hover {
+    background-color: #F5F7FA;
 }
 
 .td-padding {
@@ -250,30 +307,48 @@
 }
 
 .barang-title {
-    color: #212529;
+    color: #1A1A1A;
     font-size: 0.95rem;
 }
 
+/* Batch card styling */
 .batch-card {
     margin-bottom: 8px;
     padding: 10px;
-    border: 1px solid #dee2e6;
+    border: 1px solid #E0E0E0;
     border-radius: 6px;
-    background-color: #f8f9fa;
+    background-color: #F5F7FA;
 }
 
 .batch-id {
     font-size: 0.9rem;
+    color: #0066B3;
 }
 
 .batch-info {
     font-size: 0.8rem;
+    color: #757575;
 }
 
 .batch-amount {
     font-size: 0.85rem;
+    color: #1A1A1A;
 }
 
+/* Text colors */
+.text-primary {
+    color: #0066B3 !important;
+}
+
+.text-danger {
+    color: #E31E24 !important;
+}
+
+.text-muted {
+    color: #757575 !important;
+}
+
+/* Badge styling */
 .badge-status {
     font-size: 0.75rem;
     padding: 0.4em 0.7em;
@@ -285,16 +360,63 @@
     padding: 0.3em 0.6em;
 }
 
+.bg-warning {
+    background-color: #F59E0B !important;
+}
+
+.bg-success {
+    background-color: #1FBD88 !important;
+}
+
+.bg-danger {
+    background-color: #E31E24 !important;
+}
+
+/* Action buttons */
 .btn-action {
     padding: 6px 10px;
     font-size: 0.875rem;
+    transition: all 0.2s ease;
 }
 
 .btn-action:hover {
     transform: scale(1.05);
-    transition: all 0.2s;
+}
+
+.btn-outline-primary {
+    color: #0066B3;
+    border-color: #0066B3;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0066B3;
+    border-color: #0066B3;
+    color: #FFFFFF;
+}
+
+.btn-outline-danger {
+    color: #E31E24;
+    border-color: #E31E24;
+}
+
+.btn-outline-danger:hover {
+    background-color: #E31E24;
+    border-color: #E31E24;
+    color: #FFFFFF;
+}
+
+/* Alert styling */
+.alert-success {
+    background-color: #E8F5E9;
+    border-color: #1FBD88;
+    color: #1A1A1A;
+}
+
+.alert-danger {
+    background-color: #FFEBEE;
+    border-color: #E31E24;
+    color: #1A1A1A;
 }
 </style>
 @endpush
 @endsection
-
