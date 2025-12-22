@@ -8,9 +8,8 @@ use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PengadaanController;
-
-
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StaffController;
 
 // ==========================================
 // ROUTE LOGIN
@@ -87,6 +86,31 @@ Route::get('pengadaan/get-harga-barang/{id}', [PengadaanController::class, 'getH
 //     Route::delete('/{id}', [PengadaanController::class, 'destroy'])->name('destroy');
 //     Route::patch('/{id}/status', [PengadaanController::class, 'updateStatus'])->name('update-status');
 // });
+
+Route::middleware(['auth'])->group(function () {
+
+    // Profile Routes
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Logout Route
+    Route::post('/logout', [ProfileController::class, 'logout'])->name('logout');
+});
+
+// Staff Management Routes (Hanya untuk Admin)
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::resource('daftar_staff', StaffController::class);
+
+    // Additional staff routes
+    Route::patch('staff/{staff}/toggle-status', [StaffController::class, 'toggleStatus'])
+        ->name('staff.toggle-status');
+
+    Route::patch('staff/{staff}/update-password', [StaffController::class, 'updatePassword'])
+        ->name('staff.update-password');
+});
 
 // ==========================================
 // ROUTE STAFF
