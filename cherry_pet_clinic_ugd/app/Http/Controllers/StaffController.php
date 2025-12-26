@@ -6,130 +6,109 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
-    /**
-     * Display a listing of staff.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $staff = User::where('role', '!=', 'admin')
-            ->latest()
-            ->paginate(10);
+        $query = User::query();
+
+        // Filter berdasarkan pencarian
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter berdasarkan role
+        if ($request->has('role') && $request->role != '') {
+            $query->where('role', $request->role);
+        }
+
+        // Filter berdasarkan status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        $staff = $query->latest()->paginate(10);
 
         return view('admin.daftar_staff.index', compact('staff'));
     }
 
-    /**
-     * Show the form for creating a new staff.
-     */
     public function create()
     {
-        return view('admin.staff.create');
+        return view('admin.daftar_staff.create');
     }
 
-    /**
-     * Store a newly created staff in database.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:500'],
-            'role' => ['required', 'in:staff,kasir,dokter'],
-            'password' => ['required', 'confirmed', Password::min(8)],
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+            'phone' => 'nullable|string|max:20',
+            'role' => 'required|in:admin,staff,veterinarian',
+            'status' => 'required|in:active,inactive',
+            'address' => 'nullable|string',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
 
         User::create($validated);
 
-        return redirect()->route('admin.daftar_staff.index')
+        return redirect()->route('admin.staff.index')
             ->with('success', 'Staff berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified staff.
-     */
     public function show(User $staff)
     {
-        return view('admin.staff.show', compact('staff'));
+        return view('admin.daftar_staff.show', compact('staff'));
     }
 
-    /**
-     * Show the form for editing the specified staff.
-     */
     public function edit(User $staff)
     {
-        return view('admin.staff.edit', compact('staff'));
+        return view('admin.daftar_staff.edit', compact('staff'));
     }
 
-    /**
-     * Update the specified staff in database.
-     */
     public function update(Request $request, User $staff)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $staff->id],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:500'],
-            'role' => ['required', 'in:staff,kasir,dokter'],
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($staff->id)],
+            'password' => 'nullable|min:8|confirmed',
+            'phone' => 'nullable|string|max:20',
+            'role' => 'required|in:admin,staff,veterinarian',
+            'status' => 'required|in:active,inactive',
+            'address' => 'nullable|string',
         ]);
+
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
 
         $staff->update($validated);
 
-        return redirect()->route('admin.staff.index')
+        return redirect()->route('admin.daftar_staff.index')
             ->with('success', 'Data staff berhasil diperbarui!');
     }
 
-    /**
-     * Update staff password.
-     */
-    public function updatePassword(Request $request, User $staff)
-    {
-        $validated = $request->validate([
-            'password' => ['required', 'confirmed', Password::min(8)],
-        ]);
-
-        $staff->update([
-            'password' => Hash::make($validated['password'])
-        ]);
-
-        return back()->with('success', 'Password staff berhasil diperbarui!');
-    }
-
-    /**
-     * Remove the specified staff from database.
-     */
     public function destroy(User $staff)
     {
-        // Prevent deleting admin
-        if ($staff->role === 'admin') {
-            return back()->with('error', 'Admin tidak dapat dihapus!');
+        // Cegah penghapusan user yang sedang login
+        if ($staff->id === auth()->id()) {
+            return redirect()->route('admin.daftar_staff.index')
+                ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri!');
         }
 
         $staff->delete();
 
-        return redirect()->route('admin.staff.index')
+        return redirect()->route('admin.daftar_staff.index')
             ->with('success', 'Staff berhasil dihapus!');
-    }
-
-    /**
-     * Toggle staff status (active/inactive).
-     */
-    public function toggleStatus(User $staff)
-    {
-        $staff->update([
-            'is_active' => !$staff->is_active
-        ]);
-
-        $status = $staff->is_active ? 'diaktifkan' : 'dinonaktifkan';
-
-        return back()->with('success', "Staff berhasil {$status}!");
     }
 }

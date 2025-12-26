@@ -97,7 +97,7 @@
                             <th class="px-4 py-3 text-uppercase small fw-semibold">Pemasok</th>
                             <th class="px-4 py-3 text-uppercase small fw-semibold">Total Biaya</th>
                             <th class="px-4 py-3 text-uppercase small fw-semibold">Status</th>
-                            <th class="px-4 py-3 text-center text-uppercase small fw-semibold">Aksi</th>
+                            <th class="px-4 py-3 text-center text-uppercase small fw-semibold" width="12%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,16 +125,16 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3">
-                                <div class="d-flex justify-content-center gap-1">
+                                <div class="action-buttons">
                                     <a href="{{ route('pengadaan.show', $item->id) }}"
-                                       class="btn btn-sm btn-primary-custom"
+                                       class="action-btn action-btn-info"
                                        data-bs-toggle="tooltip"
                                        title="Detail">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     @if($item->status == 'Menunggu')
                                     <a href="{{ route('pengadaan.edit', $item->id) }}"
-                                       class="btn btn-sm btn-warning-custom"
+                                       class="action-btn action-btn-warning"
                                        data-bs-toggle="tooltip"
                                        title="Edit">
                                         <i class="fas fa-edit"></i>
@@ -146,7 +146,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                                class="btn btn-sm btn-danger-custom"
+                                                class="action-btn action-btn-danger"
                                                 data-bs-toggle="tooltip"
                                                 title="Hapus">
                                             <i class="fas fa-trash"></i>
@@ -259,6 +259,66 @@
     .card:hover {
         transform: translateY(-2px);
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 1px solid;
+        border-radius: 6px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        padding: 0;
+        font-size: 14px;
+    }
+
+    /* Detail Button - Biru */
+    .action-btn-info {
+        color: #0066B3;
+        border-color: #0066B3;
+    }
+
+    .action-btn-info:hover {
+        background: #0066B3;
+        color: white;
+    }
+
+    /* Edit Button - Kuning/Orange */
+    .action-btn-warning {
+        color: #F59E0B;
+        border-color: #F59E0B;
+    }
+
+    .action-btn-warning:hover {
+        background: #F59E0B;
+        color: white;
+    }
+
+    /* Delete Button - Merah */
+    .action-btn-danger {
+        color: #E31E24;
+        border-color: #E31E24;
+    }
+
+    .action-btn-danger:hover {
+        background: #E31E24;
+        color: white;
+    }
+
+    .action-btn i {
+        font-size: 13px;
     }
 
     /* Buttons */

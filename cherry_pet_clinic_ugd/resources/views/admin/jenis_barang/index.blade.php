@@ -93,7 +93,7 @@
                         <th class="px-4 py-3 text-uppercase small fw-semibold">Kode Jenis</th>
                         <th class="px-4 py-3 text-uppercase small fw-semibold">Nama Jenis</th>
                         <th class="px-4 py-3 text-uppercase small fw-semibold">Kategori</th>
-                        <th class="px-4 py-3 text-center text-uppercase small fw-semibold">Aksi</th>
+                        <th class="px-4 py-3 text-center text-uppercase small fw-semibold" width="12%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,20 +109,26 @@
                                 <span class="fw-medium text-dark">{{ $jenisBarang->nama_jenis }}</span>
                             </td>
                             <td class="px-4 py-3">
-                                <span class="badge {{ $jenisBarang->kategori->nama_kategori == 'Medis' ? 'badge-success-custom' : 'badge-primary-custom' }} rounded-pill">
-                                    {{ $jenisBarang->kategori->nama_kategori }}
-                                </span>
+                                @if(strtolower($jenisBarang->kategori->nama_kategori) == 'medis')
+                                    <span class="badge badge-medis rounded-pill">
+                                        {{ $jenisBarang->kategori->nama_kategori }}
+                                    </span>
+                                @else
+                                    <span class="badge badge-non-medis rounded-pill">
+                                        {{ $jenisBarang->kategori->nama_kategori }}
+                                    </span>
+                                @endif
                             </td>
                             <td class="px-4 py-3">
-                                <div class="d-flex justify-content-center gap-1">
+                                <div class="action-buttons">
                                     <a href="{{ route('admin.jenis_barang.show', $jenisBarang) }}"
-                                        class="btn btn-sm btn-primary-custom"
+                                        class="action-btn action-btn-info"
                                         data-bs-toggle="tooltip"
                                         title="Lihat Detail">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="{{ route('admin.jenis_barang.edit', $jenisBarang) }}"
-                                        class="btn btn-sm btn-success-custom"
+                                        class="action-btn action-btn-warning"
                                         data-bs-toggle="tooltip"
                                         title="Edit">
                                         <i class="fas fa-edit"></i>
@@ -134,7 +140,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="btn btn-sm btn-danger-custom"
+                                            class="action-btn action-btn-danger"
                                             data-bs-toggle="tooltip"
                                             title="Hapus">
                                             <i class="fas fa-trash"></i>
@@ -168,9 +174,52 @@
                     <div class="text-secondary small">
                         Menampilkan {{ $jenisBarangs->firstItem() }} - {{ $jenisBarangs->lastItem() }} dari {{ $jenisBarangs->total() }} data
                     </div>
-                    <div class="jenis-pagination">
-                        {{ $jenisBarangs->appends(['kategori_id' => $kategori_id])->links() }}
-                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-custom mb-0">
+                            {{-- Previous Button --}}
+                            @if ($jenisBarangs->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $jenisBarangs->appends(['kategori_id' => $kategori_id])->previousPageUrl() }}">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            @endif
+
+                            {{-- Page Numbers --}}
+                            @foreach(range(1, $jenisBarangs->lastPage()) as $page)
+                                @if($page == $jenisBarangs->currentPage())
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $jenisBarangs->appends(['kategori_id' => $kategori_id])->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Button --}}
+                            @if ($jenisBarangs->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $jenisBarangs->appends(['kategori_id' => $kategori_id])->nextPageUrl() }}">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
                 </div>
             </div>
         @endif
@@ -250,6 +299,66 @@
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
     }
 
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 1px solid;
+        border-radius: 6px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        padding: 0;
+        font-size: 14px;
+    }
+
+    /* Detail Button - Biru */
+    .action-btn-info {
+        color: #0066B3;
+        border-color: #0066B3;
+    }
+
+    .action-btn-info:hover {
+        background: #0066B3;
+        color: white;
+    }
+
+    /* Edit Button - Kuning/Orange */
+    .action-btn-warning {
+        color: #F59E0B;
+        border-color: #F59E0B;
+    }
+
+    .action-btn-warning:hover {
+        background: #F59E0B;
+        color: white;
+    }
+
+    /* Delete Button - Merah */
+    .action-btn-danger {
+        color: #E31E24;
+        border-color: #E31E24;
+    }
+
+    .action-btn-danger:hover {
+        background: #E31E24;
+        color: white;
+    }
+
+    .action-btn i {
+        font-size: 13px;
+    }
+
     /* Buttons */
     .btn {
         transition: all 0.2s ease;
@@ -309,17 +418,17 @@
         color: var(--primary-medium);
     }
 
-    /* Badges */
-    .badge-primary-custom {
-        background-color: var(--primary-medium);
+    /* Badge untuk Kategori */
+    .badge-medis {
+        background-color: #0066B3;
         color: white;
         padding: 0.4em 0.8em;
         font-size: 0.75rem;
         font-weight: 600;
     }
 
-    .badge-success-custom {
-        background-color: var(--success-color);
+    .badge-non-medis {
+        background-color: #1FBD88;
         color: white;
         padding: 0.4em 0.8em;
         font-size: 0.75rem;
@@ -378,50 +487,54 @@
     }
 
     /* Pagination styling */
-    .jenis-pagination .pagination {
-        margin-bottom: 0;
-        gap: 0.25rem;
+    .pagination-custom {
+        gap: 0.375rem;
+        margin: 0;
     }
 
-    .jenis-pagination .page-link {
-        color: var(--primary-medium);
-        border-color: var(--border-light);
-        padding: 0.375rem 0.75rem;
-        min-width: 38px;
-        text-align: center;
+    .pagination-custom .page-item {
+        margin: 0;
+    }
+
+    .pagination-custom .page-link {
+        border: 1px solid var(--border-light);
+        border-radius: 50%;
+        color: var(--text-dark);
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
         font-size: 0.875rem;
-        border-radius: 0.25rem;
+        transition: all 0.2s ease;
+        background-color: white;
     }
 
-    .jenis-pagination .page-item.active .page-link {
+    .pagination-custom .page-link:hover {
+        background-color: var(--bg-light);
+        border-color: var(--border-normal);
+        color: var(--text-dark);
+    }
+
+    .pagination-custom .page-item.active .page-link {
         background-color: var(--primary-medium);
         border-color: var(--primary-medium);
         color: white;
+        font-weight: 600;
     }
 
-    .jenis-pagination .page-link:hover {
-        background-color: var(--bg-very-light);
+    .pagination-custom .page-item.disabled .page-link {
+        background-color: var(--bg-light);
         border-color: var(--border-light);
-        color: var(--primary-medium);
+        color: var(--text-light);
+        cursor: not-allowed;
+        opacity: 0.6;
     }
 
-    /* Sembunyikan teks Previous dan Next */
-    .jenis-pagination .page-link[rel="prev"],
-    .jenis-pagination .page-link[rel="next"] {
-        font-size: 0;
-        padding: 0.375rem 0.5rem;
-    }
-
-    .jenis-pagination .page-link[rel="prev"]::before {
-        content: "‹";
-        font-size: 1.25rem;
-        line-height: 1;
-    }
-
-    .jenis-pagination .page-link[rel="next"]::before {
-        content: "›";
-        font-size: 1.25rem;
-        line-height: 1;
+    .pagination-custom .page-link i {
+        font-size: 0.75rem;
     }
 
     /* Tooltip styling */

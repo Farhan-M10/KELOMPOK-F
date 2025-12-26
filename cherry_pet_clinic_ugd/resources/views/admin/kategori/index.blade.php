@@ -1,446 +1,567 @@
-@extends('admin.layouts.app')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Cherry Pet Clinic')</title>
 
-@section('title', 'Jenis Barang')
-@section('page-title', 'Jenis Barang')
+    {{-- Bootstrap 5 CSS --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-@section('content')
-<div class="container-fluid" style="background-color: #E8F4F8; min-height: 100vh; padding: 2rem 0;">
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Header dengan Breadcrumb -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body">
-            <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mb-3">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('admin.kategori.index') }}" class="text-decoration-none text-primary-custom">
-                            <i class="fas fa-tags me-1"></i> Kategori
+    @stack('styles')
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo-circle">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C10.3431 2 9 3.34315 9 5C9 6.65685 10.3431 8 12 8C13.6569 8 15 6.65685 15 5C15 3.34315 13.6569 2 12 2Z" fill="#E31E24"/>
+                    <path d="M7 9C5.34315 9 4 10.3431 4 12C4 13.6569 5.34315 15 7 15C8.65685 15 10 13.6569 10 12C10 10.3431 8.65685 9 7 9Z" fill="#E31E24"/>
+                    <path d="M14 12C14 10.3431 15.3431 9 17 9C18.6569 9 20 10.3431 20 12C20 13.6569 18.6569 15 17 15C15.3431 15 14 13.6569 14 12Z" fill="#E31E24"/>
+                    <path d="M9 19C9 17.3431 10.3431 16 12 16C13.6569 16 15 17.3431 15 19C15 20.6569 13.6569 22 12 22C10.3431 22 9 20.6569 9 19Z" fill="#E31E24"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h3>Cherry Pet Clinic</h3>
+                <p>UGD 24 Jam - Arcawinangun Purwokerto</p>
+            </div>
+        </div>
+
+        <div class="menu">
+            <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                <span>Beranda</span>
+            </a>
+
+            <a href="{{ route('admin.stok_barang.index') }}" class="menu-item {{ request()->routeIs('admin.stok_barang.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                <span>Stok Barang</span>
+            </a>
+
+            <a href="{{ route('pengadaan.index') }}" class="menu-item {{ request()->routeIs('pengadaan.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                <span>Pengadaan Stok</span>
+            </a>
+
+            <a href="#" class="menu-item {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Laporan</span>
+            </a>
+
+            <a href="{{ route('admin.suppliers.index') }}" class="menu-item {{ request()->routeIs('admin.suppliers.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span>Pemasok</span>
+            </a>
+
+            <a href="{{ route('admin.kategori.index') }}" class="menu-item {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+                <span>Kategori</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1>@yield('header-title', 'Sistem Manajemen Inventori Klinik Hewan')</h1>
+        </div>
+
+        <div class="header-actions">
+            <div class="notification-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                </svg>
+                <span class="notification-badge">1</span>
+            </div>
+
+            <!-- User Profile Dropdown -->
+            <div class="dropdown">
+                <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="user-avatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin Name</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <svg class="dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+
+                <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.show') }}">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            <span>Profil Saya</span>
                         </a>
                     </li>
-                    @if($kategori_id)
-                        <li class="breadcrumb-item">
-                            <span class="text-secondary">{{ $kategoris->find($kategori_id)->nama_kategori ?? 'Kategori' }}</span>
-                        </li>
-                    @endif
-                    <li class="breadcrumb-item active text-dark" aria-current="page">Jenis Barang</li>
-                </ol>
-            </nav>
-
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h4 class="fw-bold mb-2 text-dark">
-                        Jenis Barang
-                        @if($kategori_id)
-                            <span class="text-secondary">- {{ $kategoris->find($kategori_id)->nama_kategori }}</span>
-                        @endif
-                    </h4>
-                    <p class="text-secondary small mb-0">Kelola jenis barang untuk inventori klinik</p>
-                </div>
-                <a href="{{ route('jenis-barangs.create', ['kategori_id' => $kategori_id]) }}"
-                    class="btn btn-danger-custom">
-                    <i class="fas fa-plus me-2"></i> Tambah Baru
-                </a>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>Pengaturan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('admin.staff.index') }}">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                            <span>Daftar Staff</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                                <span>Keluar</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- Filter Kategori -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body">
-            <div class="d-flex flex-wrap gap-2">
-                <a href="{{ route('jenis-barangs.index') }}"
-                    class="btn {{ !$kategori_id ? 'btn-primary-custom' : 'btn-outline-custom' }}">
-                    Semua
-                </a>
-                @foreach($kategoris as $kategori)
-                    <a href="{{ route('jenis-barangs.index', ['kategori_id' => $kategori->id]) }}"
-                        class="btn {{ $kategori_id == $kategori->id ? 'btn-primary-custom' : 'btn-outline-custom' }}">
-                        {{ $kategori->nama_kategori }}
-                    </a>
-                @endforeach
-            </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2>@yield('page-title', 'Beranda')</h2>
+        </div>
+
+        <div class="content-area">
+            @yield('content')
         </div>
     </div>
 
-    <!-- Alert Messages -->
-    @if(session('success'))
-        <div class="alert alert-success-custom alert-dismissible fade show" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-check-circle me-2"></i>
-                <span>{{ session('success') }}</span>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    @if(session('error'))
-        <div class="alert alert-danger-custom alert-dismissible fade show" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <span>{{ session('error') }}</span>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
 
-    <!-- Tabel Jenis Barang -->
-    <div class="card border-0 shadow-sm">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-header-custom">
-                    <tr>
-                        <th class="px-4 py-3 text-uppercase small fw-semibold">No</th>
-                        <th class="px-4 py-3 text-uppercase small fw-semibold">Kode Jenis</th>
-                        <th class="px-4 py-3 text-uppercase small fw-semibold">Nama Jenis</th>
-                        <th class="px-4 py-3 text-uppercase small fw-semibold">Kategori</th>
-                        <th class="px-4 py-3 text-center text-uppercase small fw-semibold">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($jenisBarangs as $index => $jenisBarang)
-                        <tr class="table-row-custom">
-                            <td class="px-4 py-3">
-                                <span class="text-medium">{{ $jenisBarangs->firstItem() + $index }}</span>
-                            </td>
-                            <td class="px-4 py-3">
-                                <code class="code-badge">{{ $jenisBarang->kode_jenis }}</code>
-                            </td>
-                            <td class="px-4 py-3">
-                                <span class="fw-medium text-dark">{{ $jenisBarang->nama_jenis }}</span>
-                            </td>
-                            <td class="px-4 py-3">
-                                <span class="badge {{ $jenisBarang->kategori->nama_kategori == 'Medis' ? 'badge-success-custom' : 'badge-primary-custom' }} rounded-pill">
-                                    {{ $jenisBarang->kategori->nama_kategori }}
-                                </span>
-                            </td>
-                            <td class="px-4 py-3">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('jenis-barangs.show', $jenisBarang) }}"
-                                        class="btn btn-sm btn-primary-custom"
-                                        data-bs-toggle="tooltip"
-                                        title="Lihat Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('jenis-barangs.edit', $jenisBarang) }}"
-                                        class="btn btn-sm btn-success-custom"
-                                        data-bs-toggle="tooltip"
-                                        title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('jenis-barangs.destroy', $jenisBarang) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus jenis barang ini?')"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="btn btn-sm btn-danger-custom"
-                                            data-bs-toggle="tooltip"
-                                            title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center py-5">
-                                <div class="d-flex flex-column align-items-center gap-3">
-                                    <i class="fas fa-box-open text-light-custom" style="font-size: 4rem; opacity: 0.3;"></i>
-                                    <p class="text-secondary fw-medium mb-0">Belum ada jenis barang</p>
-                                    <a href="{{ route('jenis-barangs.create', ['kategori_id' => $kategori_id]) }}"
-                                        class="btn btn-danger-custom">
-                                        <i class="fas fa-plus me-2"></i> Tambah Jenis Barang
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 150;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
 
-        <!-- Pagination -->
-        @if($jenisBarangs->hasPages())
-            <div class="card-footer bg-white border-top border-light-custom">
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-                    <div class="text-secondary small">
-                        Menampilkan {{ $jenisBarangs->firstItem() }} - {{ $jenisBarangs->lastItem() }} dari {{ $jenisBarangs->total() }} data
-                    </div>
-                    <div class="jenis-pagination">
-                        {{ $jenisBarangs->appends(['kategori_id' => $kategori_id])->links() }}
-                    </div>
-                </div>
-            </div>
-        @endif
-    </div>
-</div>
+        .menu-toggle span {
+            width: 20px;
+            height: 2px;
+            background: #1A1A1A;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
 
-@push('styles')
-<style>
-    /* Color Variables */
-    :root {
-        --primary-dark: #003D7A;
-        --primary-medium: #0066B3;
-        --error-color: #E31E24;
-        --error-hover: #FF4444;
-        --success-color: #1FBD88;
-        --warning-color: #F59E0B;
-        --bg-light: #F5F7FA;
-        --bg-very-light: #E8F4F8;
-        --text-dark: #1A1A1A;
-        --text-secondary: #424242;
-        --text-medium: #757575;
-        --text-light: #BDBDBD;
-        --border-normal: #D0D0D0;
-        --border-light: #E0E0E0;
-        --success-bg: #E8F5E9;
-        --error-bg: #FFEBEE;
-    }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 165px;
+            height: 100vh;
+            background: linear-gradient(180deg, #0066B3 0%, #004080 100%);
+            padding: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            overflow-y: auto;
+        }
 
-    /* Body Background Override */
-    body {
-        background-color: var(--bg-very-light) !important;
-    }
+        .logo-section {
+            text-align: center;
+            padding: 20px 10px;
+            background: rgba(0, 0, 0, 0.1);
+        }
 
-    /* Main Content Background */
-    .container-fluid {
-        background-color: var(--bg-very-light) !important;
-    }
+        .logo-circle {
+            width: 55px;
+            height: 55px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
 
-    /* Text Colors */
-    .text-dark {
-        color: var(--text-dark) !important;
-    }
+        .logo-circle svg {
+            width: 32px;
+            height: 32px;
+        }
 
-    .text-secondary {
-        color: var(--text-secondary) !important;
-    }
+        .logo-text h3 {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            line-height: 1.2;
+        }
 
-    .text-medium {
-        color: var(--text-medium) !important;
-    }
+        .logo-text p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 8px;
+            line-height: 1.3;
+        }
 
-    .text-light-custom {
-        color: var(--text-light) !important;
-    }
+        .menu {
+            padding: 15px 8px;
+        }
 
-    .text-primary-custom {
-        color: var(--primary-medium) !important;
-    }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-bottom: 3px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+        }
 
-    /* Border Colors */
-    .border-custom {
-        border-color: var(--border-normal) !important;
-    }
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
 
-    .border-light-custom {
-        border-color: var(--border-light) !important;
-    }
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
 
-    /* Card Styling */
-    .card {
-        transition: all 0.3s ease;
-        background-color: white;
-    }
+        .menu-item svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
 
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    }
+        .header {
+            position: fixed;
+            left: 165px;
+            right: 0;
+            top: 0;
+            height: 60px;
+            background: #0066B3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            z-index: 50;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-    /* Buttons */
-    .btn {
-        transition: all 0.2s ease;
-        font-weight: 500;
-    }
+        .header-left h1 {
+            font-size: 15px;
+            color: white;
+            font-weight: 600;
+        }
 
-    .btn:hover:not(:disabled) {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-    .btn-primary-custom {
-        background-color: var(--primary-medium);
-        border-color: var(--primary-medium);
-        color: white;
-    }
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
 
-    .btn-primary-custom:hover {
-        background-color: var(--primary-dark);
-        border-color: var(--primary-dark);
-        color: white;
-    }
+        .notification-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .btn-success-custom {
-        background-color: var(--success-color);
-        border-color: var(--success-color);
-        color: white;
-    }
+        .notification-icon svg {
+            width: 22px;
+            height: 22px;
+            color: white;
+        }
 
-    .btn-success-custom:hover {
-        background-color: #1aa876;
-        border-color: #1aa876;
-        color: white;
-    }
+        .notification-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            min-width: 18px;
+            height: 18px;
+            background: #E31E24;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 0 5px;
+            border: 2px solid #0066B3;
+        }
 
-    .btn-danger-custom {
-        background-color: var(--error-color);
-        border-color: var(--error-color);
-        color: white;
-    }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
 
-    .btn-danger-custom:hover {
-        background-color: var(--error-hover);
-        border-color: var(--error-hover);
-        color: white;
-    }
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .btn-outline-custom {
-        background-color: white;
-        border-color: var(--border-normal);
-        color: var(--text-secondary);
-    }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: #E31E24;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
 
-    .btn-outline-custom:hover {
-        background-color: var(--bg-light);
-        border-color: var(--primary-medium);
-        color: var(--primary-medium);
-    }
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* Badges */
-    .badge-primary-custom {
-        background-color: var(--primary-medium);
-        color: white;
-        padding: 0.4em 0.8em;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
+        .user-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
 
-    .badge-success-custom {
-        background-color: var(--success-color);
-        color: white;
-        padding: 0.4em 0.8em;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
+        .user-role {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
 
-    /* Code Badge */
-    .code-badge {
-        background-color: var(--bg-light);
-        color: var(--text-dark);
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        font-size: 0.875rem;
-        font-family: 'Courier New', monospace;
-    }
+        .dropdown-arrow {
+            width: 16px;
+            height: 16px;
+            color: white;
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
 
-    /* Table Styling */
-    .table-header-custom {
-        background-color: var(--bg-light);
-        color: var(--text-secondary);
-    }
+        .dropdown.show .dropdown-arrow {
+            transform: rotate(180deg);
+        }
 
-    .table-row-custom {
-        transition: background-color 0.2s ease;
-    }
+        /* Profile Dropdown Styling */
+        .profile-dropdown {
+            min-width: 220px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 8px 0;
+            margin-top: 8px;
+        }
 
-    .table-row-custom:hover {
-        background-color: var(--bg-very-light);
-    }
+        .profile-dropdown .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            font-size: 14px;
+            color: #1A1A1A;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
 
-    /* Alert Styling */
-    .alert-success-custom {
-        background-color: var(--success-bg);
-        border-color: var(--success-color);
-        color: var(--text-dark);
-    }
+        .profile-dropdown .dropdown-item:hover {
+            background: #f8f9fa;
+            color: #0066B3;
+        }
 
-    .alert-success-custom .fas {
-        color: var(--success-color);
-    }
+        .profile-dropdown .dropdown-item.text-danger:hover {
+            background: #fff5f5;
+            color: #E31E24;
+        }
 
-    .alert-danger-custom {
-        background-color: var(--error-bg);
-        border-color: var(--error-color);
-        color: var(--text-dark);
-    }
+        .profile-dropdown .dropdown-item svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
 
-    .alert-danger-custom .fas {
-        color: var(--error-color);
-    }
+        .profile-dropdown .dropdown-divider {
+            margin: 8px 0;
+        }
 
-    /* Breadcrumb */
-    .breadcrumb-item + .breadcrumb-item::before {
-        content: "›";
-        color: var(--text-medium);
-    }
+        .main-content {
+            margin-left: 165px;
+            margin-top: 60px;
+            padding: 0;
+            min-height: calc(100vh - 60px);
+        }
 
-    /* Pagination styling */
-    .jenis-pagination .pagination {
-        margin-bottom: 0;
-        gap: 0.25rem;
-    }
+        .page-header {
+            background: white;
+            padding: 20px 25px;
+            border-bottom: 1px solid #E0E0E0;
+        }
 
-    .jenis-pagination .page-link {
-        color: var(--primary-medium);
-        border-color: var(--border-light);
-        padding: 0.375rem 0.75rem;
-        min-width: 38px;
-        text-align: center;
-        font-size: 0.875rem;
-        border-radius: 0.25rem;
-    }
+        .page-header h2 {
+            font-size: 18px;
+            color: #1A1A1A;
+            font-weight: 600;
+        }
 
-    .jenis-pagination .page-item.active .page-link {
-        background-color: var(--primary-medium);
-        border-color: var(--primary-medium);
-        color: white;
-    }
+        .content-area {
+            padding: 25px;
+        }
 
-    .jenis-pagination .page-link:hover {
-        background-color: var(--bg-very-light);
-        border-color: var(--border-light);
-        color: var(--primary-medium);
-    }
+        /* Bootstrap Overrides & Enhancements */
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
 
-    /* Sembunyikan teks Previous dan Next */
-    .jenis-pagination .page-link[rel="prev"],
-    .jenis-pagination .page-link[rel="next"] {
-        font-size: 0;
-        padding: 0.375rem 0.5rem;
-    }
+        .form-control, .form-select {
+            border-radius: 6px;
+            font-size: 14px;
+        }
 
-    .jenis-pagination .page-link[rel="prev"]::before {
-        content: "‹";
-        font-size: 1.25rem;
-        line-height: 1;
-    }
+        .form-control:focus, .form-select:focus {
+            border-color: #0066B3;
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 179, 0.25);
+        }
 
-    .jenis-pagination .page-link[rel="next"]::before {
-        content: "›";
-        font-size: 1.25rem;
-        line-height: 1;
-    }
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+        }
 
-    /* Tooltip styling */
-    .tooltip-inner {
-        font-size: 0.75rem;
-        background-color: var(--text-dark);
-    }
-</style>
-@endpush
+        .alert {
+            border-radius: 8px;
+        }
 
-@push('scripts')
-<script>
-    // Initialize Bootstrap tooltips
-    document.addEventListener('DOMContentLoaded', function() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+        .table {
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .header {
+                left: 0;
+                padding: 0 15px 0 65px;
+            }
+
+            .header-left h1 {
+                font-size: 13px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .dropdown-arrow {
+                display: none;
+            }
+        }
+    </style>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle?.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
         });
-    });
-</script>
-@endpush
-@endsection
+
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target) && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+
+    {{-- Bootstrap JS Bundle (includes Popper) --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    @stack('scripts')
+</body>
+</html>

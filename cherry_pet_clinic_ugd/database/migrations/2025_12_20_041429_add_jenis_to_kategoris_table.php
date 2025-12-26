@@ -14,8 +14,9 @@ return new class extends Migration
             Schema::table('kategoris', function (Blueprint $table) {
                 $table->enum('jenis', ['medis', 'non-medis'])->default('medis')->after('nama_kategori');
             });
-            
+
             DB::table('kategoris')->update(['jenis' => 'medis']);
+            
         }
     }
 

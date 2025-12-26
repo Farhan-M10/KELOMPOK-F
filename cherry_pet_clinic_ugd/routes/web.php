@@ -112,6 +112,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         ->name('staff.update-password');
 });
 
+Route::middleware(['auth'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // Staff Management Routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('staff', StaffController::class);
+    });
+});
 // ==========================================
 // ROUTE STAFF
 // ==========================================

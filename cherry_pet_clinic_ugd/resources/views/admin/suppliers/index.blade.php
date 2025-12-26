@@ -77,8 +77,8 @@
                 <div class="col-md-3">
                     <select name="kategori" class="form-select border-custom" id="kategoriFilter">
                         <option value="">Semua Jenis Produk</option>
-                        <option value="Medis" {{ request('kategori') == 'Medis' ? 'selected' : '' }}>Medis</option>
-                        <option value="Non-Medis" {{ request('kategori') == 'Non-Medis' ? 'selected' : '' }}>Non Medis</option>
+                        <option value="medis" {{ request('kategori') == 'medis' ? 'selected' : '' }}>Medis</option>
+                        <option value="non-medis" {{ request('kategori') == 'non-medis' ? 'selected' : '' }}>Non Medis</option>
                     </select>
                 </div>
 
@@ -112,7 +112,7 @@
     <div class="row g-3 mb-4">
         @forelse($suppliers as $s)
         <div class="col-md-6 col-lg-6">
-            <div class="card border-0 shadow-sm h-100 border-start border-5 {{ $s->kategori->nama_kategori == 'Medis' ? 'border-success-custom' : 'border-primary-custom' }}">
+            <div class="card border-0 shadow-sm h-100 border-start border-5 {{ strtolower($s->kategori->nama_kategori) == 'medis' ? 'border-primary-custom' : 'border-success-custom' }}">
                 <div class="card-body">
                     <!-- Header -->
                     <div class="d-flex justify-content-between align-items-start mb-3 pb-3 border-bottom border-light-custom">
@@ -120,46 +120,37 @@
                             <h5 class="card-title fw-bold mb-1 text-dark">{{ $s->nama_supplier }}</h5>
                             <p class="text-secondary small mb-0">NIB: {{ $s->nib }}</p>
                         </div>
-                        <span class="badge {{ $s->kategori->nama_kategori == 'Medis' ? 'badge-success-custom' : 'badge-primary-custom' }} rounded-pill">
+                        <span class="badge {{ strtolower($s->kategori->nama_kategori) == 'medis' ? 'badge-primary-custom' : 'badge-success-custom' }} rounded-pill">
                             {{ $s->kategori->nama_kategori }}
                         </span>
                     </div>
 
-                    <!-- Info Section -->
+                    <!-- Info Section - Without Icons -->
                     <div class="mb-3">
-                        <div class="d-flex align-items-start mb-2">
-                            <i class="fas fa-boxes text-medium me-2 mt-1" style="width: 16px;"></i>
-                            <div class="flex-grow-1">
-                                <p class="text-secondary small mb-0">Jenis Barang</p>
-                                <p class="fw-medium mb-0 text-dark">{{ $s->jenisBarang->nama_jenis }}</p>
-                            </div>
+                        <div class="mb-3">
+                            <p class="text-secondary small mb-1">Jenis Barang</p>
+                            <p class="fw-medium mb-0 text-dark">{{ $s->jenisBarang->nama_jenis }}</p>
                         </div>
 
-                        <div class="d-flex align-items-start mb-2">
-                            <i class="fas fa-map-marker-alt text-medium me-2 mt-1" style="width: 16px;"></i>
-                            <div class="flex-grow-1">
-                                <p class="text-secondary small mb-0">Alamat</p>
-                                <p class="fw-medium mb-0 text-truncate text-dark">{{ $s->alamat }}</p>
-                            </div>
+                        <div class="mb-3">
+                            <p class="text-secondary small mb-1">Alamat</p>
+                            <p class="fw-medium mb-0 text-dark">{{ $s->alamat }}</p>
                         </div>
 
-                        <div class="d-flex align-items-start">
-                            <i class="fas fa-phone text-medium me-2 mt-1" style="width: 16px;"></i>
-                            <div class="flex-grow-1">
-                                <p class="text-secondary small mb-0">Kontak</p>
-                                <p class="fw-medium mb-0 text-dark">{{ $s->kontak }}</p>
-                            </div>
+                        <div>
+                            <p class="text-secondary small mb-1">Kontak</p>
+                            <p class="fw-medium mb-0 text-dark">{{ $s->kontak }}</p>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="d-flex gap-2 pt-3 border-top border-light-custom">
                         <a href="{{ route('admin.suppliers.show', $s) }}"
-                           class="btn btn-sm btn-primary-custom flex-fill">
+                           class="btn btn-sm btn-info-custom flex-fill">
                             <i class="fas fa-eye me-1"></i> Detail
                         </a>
                         <a href="{{ route('admin.suppliers.edit', $s) }}"
-                           class="btn btn-sm btn-success-custom flex-fill">
+                           class="btn btn-sm btn-warning-custom flex-fill">
                             <i class="fas fa-edit me-1"></i> Edit
                         </a>
                         <form action="{{ route('admin.suppliers.destroy', $s) }}" method="POST"
@@ -205,13 +196,58 @@
     <!-- Pagination -->
     @if($suppliers->hasPages())
     <div class="card border-0 shadow-sm">
-        <div class="card-body">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-                <div class="text-secondary small">
-                    Menampilkan {{ $suppliers->firstItem() }} - {{ $suppliers->lastItem() }} dari {{ $suppliers->total() }} data
+        <div class="card-body py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-secondary" style="font-size: 0.875rem;">
+                    Menampilkan {{ $suppliers->firstItem() }}-{{ $suppliers->lastItem() }} dari {{ $suppliers->total() }} supplier
                 </div>
-                <div class="supplier-pagination">
-                    {{ $suppliers->appends(['kategori' => request('kategori'), 'search' => request('search')])->links() }}
+                <div class="custom-pagination">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            {{-- Previous Button --}}
+                            @if ($suppliers->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $suppliers->appends(['kategori' => request('kategori'), 'search' => request('search')])->previousPageUrl() }}" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            @endif
+
+                            {{-- Page Numbers --}}
+                            @foreach(range(1, $suppliers->lastPage()) as $page)
+                                @if($page == $suppliers->currentPage())
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $suppliers->appends(['kategori' => request('kategori'), 'search' => request('search')])->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Button --}}
+                            @if ($suppliers->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $suppliers->appends(['kategori' => request('kategori'), 'search' => request('search')])->nextPageUrl() }}" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -338,6 +374,32 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
 
+    /* Detail Button - Biru */
+    .btn-info-custom {
+        background-color: #0066B3;
+        border-color: #0066B3;
+        color: white;
+    }
+
+    .btn-info-custom:hover {
+        background-color: #003D7A;
+        border-color: #003D7A;
+        color: white;
+    }
+
+    /* Edit Button - Kuning/Orange */
+    .btn-warning-custom {
+        background-color: #F59E0B;
+        border-color: #F59E0B;
+        color: white;
+    }
+
+    .btn-warning-custom:hover {
+        background-color: #d97706;
+        border-color: #d97706;
+        color: white;
+    }
+
     .btn-primary-custom {
         background-color: var(--primary-medium);
         border-color: var(--primary-medium);
@@ -424,61 +486,56 @@
         border-left-width: 4px !important;
     }
 
-    /* Text truncate */
-    .text-truncate {
-        max-width: 100%;
+    /* Custom Pagination Styling */
+    .custom-pagination .pagination {
+        gap: 0.375rem;
+        margin: 0;
     }
 
-    /* Pagination styling */
-    .supplier-pagination .pagination {
-        margin-bottom: 0;
-        gap: 0.25rem;
+    .custom-pagination .page-item {
+        margin: 0;
     }
 
-    .supplier-pagination .page-link {
-        color: var(--primary-medium);
-        border-color: var(--border-light);
-        padding: 0.25rem 0.5rem;
-        min-width: 32px;
-        text-align: center;
-        font-size: 0.813rem;
-        border-radius: 0.25rem;
+    .custom-pagination .page-link {
+        border: 1px solid var(--border-light);
+        border-radius: 0.375rem;
+        color: var(--text-dark);
+        padding: 0.5rem 0.75rem;
+        min-width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        background-color: white;
     }
 
-    .supplier-pagination .page-item.active .page-link {
+    .custom-pagination .page-link:hover {
+        background-color: var(--bg-light);
+        border-color: var(--border-normal);
+        color: var(--text-dark);
+    }
+
+    .custom-pagination .page-item.active .page-link {
         background-color: var(--primary-medium);
         border-color: var(--primary-medium);
         color: white;
+        font-weight: 600;
+        z-index: 3;
     }
 
-    .supplier-pagination .page-link:hover {
-        background-color: var(--bg-very-light);
+    .custom-pagination .page-item.disabled .page-link {
+        background-color: var(--bg-light);
         border-color: var(--border-light);
-        color: var(--primary-medium);
+        color: var(--text-light);
+        cursor: not-allowed;
+        opacity: 0.6;
     }
 
-    /* Sembunyikan teks Previous dan Next */
-    .supplier-pagination .page-link[rel="prev"],
-    .supplier-pagination .page-link[rel="next"] {
-        font-size: 0;
-        padding: 0.25rem 0.4rem;
-    }
-
-    .supplier-pagination .page-link[rel="prev"]::before {
-        content: "‹";
-        font-size: 1rem;
-        line-height: 1;
-    }
-
-    .supplier-pagination .page-link[rel="next"]::before {
-        content: "›";
-        font-size: 1rem;
-        line-height: 1;
-    }
-
-    /* Ensure proper spacing */
-    .row.g-3 {
-        margin-bottom: 1rem;
+    .custom-pagination .page-link i {
+        font-size: 0.75rem;
     }
 
     /* Responsive */
@@ -491,16 +548,15 @@
             width: 100%;
             margin-bottom: 0.5rem;
         }
-    }
-</style>
-@endpush
 
-@push('scripts')
-<script>
-    // Optional: Auto-submit saat kategori dipilih (uncomment jika ingin fitur ini)
-    // document.getElementById('kategoriFilter')?.addEventListener('change', function() {
-    //     document.getElementById('filterForm').submit();
-    // });
-</script>
+        .custom-pagination .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0.375rem 0.625rem;
+            font-size: 0.813rem;
+        }
+    }
+
+</style>
 @endpush
 @endsection

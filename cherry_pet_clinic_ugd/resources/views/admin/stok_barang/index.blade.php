@@ -187,9 +187,48 @@
         </div>
     </div>
 
-    <div class="mt-3 d-flex justify-content-between align-items-center">
-        <small class="text-muted">Menampilkan {{ $barangs->firstItem() ?? 0 }}-{{ $barangs->lastItem() ?? 0 }} dari {{ $barangs->total() }} item</small>
-        {{ $barangs->appends(request()->query())->links() }}
+   {{-- Pagination Footer --}}
+<div class="card mt-3 border-0">
+    <div class="card-body py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <small class="text-muted">
+                    Menampilkan {{ $barangs->firstItem() ?? 0 }}-{{ $barangs->lastItem() ?? 0 }} dari {{ $barangs->total() }} barang
+                </small>
+            </div>
+            <div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-custom mb-0">
+                        {{-- Previous Button --}}
+                        <li class="page-item @if($barangs->onFirstPage()) disabled @endif">
+                            <a class="page-link" href="{{ $barangs->previousPageUrl() }}" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                            </a>
+                        </li>
+
+                        {{-- Page Numbers --}}
+                        @foreach(range(1, $barangs->lastPage()) as $page)
+                            @if($page == $barangs->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $barangs->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Button --}}
+                        <li class="page-item @if(!$barangs->hasMorePages()) disabled @endif">
+                            <a class="page-link" href="{{ $barangs->nextPageUrl() }}" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -416,6 +455,56 @@ body {
     background-color: #FFEBEE;
     border-color: #E31E24;
     color: #1A1A1A;
+}
+
+/* Custom Pagination Styling */
+.pagination-custom {
+    display: flex;
+    gap: 4px;
+}
+
+.pagination-custom .page-item {
+    margin: 0;
+}
+
+.pagination-custom .page-link {
+    color: #757575;
+    background-color: #FFFFFF;
+    border: 1px solid #D0D0D0;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 44px;
+    text-align: center;
+}
+
+.pagination-custom .page-link:hover {
+    color: #FFFFFF;
+    background-color: #0066B3;
+    border-color: #0066B3;
+}
+
+.pagination-custom .page-item.active .page-link {
+    color: #FFFFFF;
+    background-color: #0066B3;
+    border-color: #0066B3;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 102, 179, 0.3);
+}
+
+.pagination-custom .page-item.disabled .page-link {
+    color: #BDBDBD;
+    background-color: #F5F7FA;
+    border-color: #E0E0E0;
+    cursor: not-allowed;
+}
+
+.pagination-custom .page-item.disabled .page-link:hover {
+    color: #BDBDBD;
+    background-color: #F5F7FA;
+    border-color: #E0E0E0;
 }
 </style>
 @endpush

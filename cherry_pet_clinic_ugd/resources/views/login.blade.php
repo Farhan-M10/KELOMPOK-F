@@ -289,7 +289,7 @@
             .header-section {
                 padding: 30px 25px 25px;
             }
-            
+
             .form-section {
                 padding: 30px 25px;
             }
@@ -337,13 +337,13 @@
 
             <form action="{{ route('login.submit') }}" method="POST">
                 @csrf
-                
+
                 <div class="form-group">
                     <label for="email">Email<span>*</span></label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
                         placeholder="Admin@cherrypetclinic.com"
                         value="{{ old('email') }}"
                         class="{{ $errors->has('email') ? 'error' : '' }}"
@@ -354,10 +354,10 @@
                 <div class="form-group">
                     <label for="password">Kata Sandi<span>*</span></label>
                     <div class="password-wrapper">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
                             placeholder="••••••••"
                             class="{{ $errors->has('password') ? 'error' : '' }}"
                             required
@@ -388,7 +388,7 @@
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 // Eye slash icon (mata dicoret)

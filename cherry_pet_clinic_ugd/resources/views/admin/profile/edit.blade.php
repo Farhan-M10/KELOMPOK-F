@@ -150,7 +150,7 @@
 .profile-avatar-large {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #DC3545 0%, #C82333 100%);
+    background: #E31E24;
     border-radius: 50%;
     display: flex;
     align-items: center;

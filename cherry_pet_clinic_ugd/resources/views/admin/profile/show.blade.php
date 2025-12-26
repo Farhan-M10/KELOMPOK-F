@@ -131,7 +131,7 @@
 .profile-avatar-large {
     width: 100px;
     height: 100px;
-    background: linear-gradient(135deg, #0066B3 0%, #004080 100%);
+    background: #E31E24;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -140,7 +140,7 @@
     font-size: 36px;
     font-weight: 600;
     margin: 0 auto;
-    box-shadow: 0 4px 12px rgba(0, 102, 179, 0.3);
+    box-shadow: 0 4px 12px rgba(227, 30, 36, 0.3);
 }
 
 .info-item {
