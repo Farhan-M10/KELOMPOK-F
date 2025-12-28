@@ -10,6 +10,10 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\PenguranganStokController;
+use App\Http\Controllers\ProfileStaffController;
+use App\Http\Controllers\LaporanStaffController;
+use App\Http\Controllers\DashboardController;
 
 // ==========================================
 // ROUTE LOGIN
@@ -45,9 +49,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard
-    Route::get('/dashboard', function () {
-        return view('admin.layouts.app');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Suppliers
     Route::resource('suppliers', SupplierController::class);
@@ -128,8 +130,34 @@ Route::middleware(['auth'])->group(function () {
 // ==========================================
 Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('staff.dashboard');
-    })->name('dashboard');
+    // Ubah dari closure menjadi controller
+    Route::get('/penguranganstok', [PenguranganStokController::class, 'index'])
+        ->name('pengurangan_stok.index');
 
+    // Route untuk menyimpan pengurangan stok
+    Route::post('/pengurangan/store', [PenguranganStokController::class, 'store'])
+        ->name('pengurangan.store');
+
+     // Laporan
+    Route::get('/laporan', [LaporanStaffController::class, 'index'])
+        ->name('laporan.index');
+    Route::get('/laporan/{id}', [LaporanStaffController::class, 'show'])
+        ->name('laporan.show');
+    Route::get('/laporan/export/pdf', [LaporanStaffController::class, 'exportPdf'])
+        ->name('laporan.export.pdf');
+
+    // Profile Staff
+    Route::get('/profile', [ProfileStaffController::class, 'show'])
+        ->name('profile.show');
+    Route::get('/profile/edit', [ProfileStaffController::class, 'edit'])
+        ->name('profile.edit');
+    Route::put('/profile', [ProfileStaffController::class, 'update'])
+        ->name('profile.update');
+    Route::put('/profile/password', [ProfileStaffController::class, 'updatePassword'])
+        ->name('profile.password');
+
+    // Logout Staff
+    Route::post('/logout', [ProfileStaffController::class, 'logout'])->name('logout');
+
+    // ... route staff lainnya
 });

@@ -55,7 +55,7 @@ class LoginController extends Controller
                 return redirect()->route('admin.dashboard')
                     ->with('success', 'Selamat datang, ' . $user->name . '!');
             } else {
-                return redirect()->route('staff.dashboard')
+                return redirect()->route('staff.pengurangan_stok.index')
                     ->with('success', 'Selamat datang, ' . $user->name . '!');
             }
         }

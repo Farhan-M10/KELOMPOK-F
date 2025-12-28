@@ -1,5 +1,4 @@
 <?php
-// File: app/Models/BatchBarang.php
 
 namespace App\Models;
 
@@ -28,6 +27,12 @@ class BatchBarang extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class);
+    }
+
+    // Relasi ke PenguranganStok
+    public function penguranganStok()
+    {
+        return $this->hasMany(PenguranganStok::class, 'batch_barang_id');
     }
 
     public function updateStatus()
@@ -64,5 +69,21 @@ class BatchBarang extends Model
             'Kritis' => 'danger',
             default => 'secondary'
         };
+    }
+
+    // Method untuk mengurangi stok
+    public function kurangiStok($jumlah)
+    {
+        if ($this->jumlah >= $jumlah) {
+            $this->jumlah -= $jumlah;
+            $this->save();
+
+            // Update total stok di tabel barang
+            $this->barang->total_stok = $this->barang->hitungTotalStok();
+            $this->barang->save();
+
+            return true;
+        }
+        return false;
     }
 }

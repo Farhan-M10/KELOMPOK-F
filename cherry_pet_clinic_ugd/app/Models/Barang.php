@@ -1,5 +1,4 @@
 <?php
-// File: app/Models/Barang.php
 
 namespace App\Models;
 
