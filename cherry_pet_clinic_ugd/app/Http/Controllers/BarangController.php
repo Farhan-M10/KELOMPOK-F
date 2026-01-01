@@ -112,7 +112,12 @@ class BarangController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.stok_barang.index')
+            // PERBAIKAN: Ambil jenis tab dari kategori yang dipilih
+            $kategori = Kategori::find($request->kategori_id);
+            $jenisTab = $kategori ? $kategori->jenis : 'medis';
+
+            // Redirect dengan parameter jenis_tab
+            return redirect()->route('admin.stok_barang.index', ['jenis_tab' => $jenisTab])
                 ->with('success', 'Barang berhasil ditambahkan dengan ' . count($request->batches) . ' batch');
 
         } catch (\Exception $e) {
@@ -128,7 +133,6 @@ class BarangController extends Controller
         $barang = Barang::with('batchBarangs')->findOrFail($id);
         $kategoris = Kategori::all();
         $jenisBarangs = JenisBarang::all();
-        // PERBAIKAN: Tambah titik antara admin dan stok_barang
         return view('admin.stok_barang.edit', compact('barang', 'kategoris', 'jenisBarangs'));
     }
 
@@ -148,8 +152,11 @@ class BarangController extends Controller
         $barang = Barang::findOrFail($id);
         $barang->update($request->all());
 
-        // PERBAIKAN: Ganti route ke admin.stok_barang.index
-        return redirect()->route('admin.stok_barang.index')
+        // PERBAIKAN: Ambil jenis tab dari kategori
+        $kategori = Kategori::find($barang->kategori_id);
+        $jenisTab = $kategori ? $kategori->jenis : 'medis';
+
+        return redirect()->route('admin.stok_barang.index', ['jenis_tab' => $jenisTab])
             ->with('success', 'Barang berhasil diupdate');
     }
 
@@ -157,13 +164,16 @@ class BarangController extends Controller
     {
         try {
             $barang = Barang::findOrFail($id);
+            
+            // PERBAIKAN: Ambil jenis tab sebelum dihapus
+            $kategori = Kategori::find($barang->kategori_id);
+            $jenisTab = $kategori ? $kategori->jenis : 'medis';
+            
             $barang->delete();
 
-            // PERBAIKAN: Ganti route ke admin.stok_barang.index
-            return redirect()->route('admin.stok_barang.index')
+            return redirect()->route('admin.stok_barang.index', ['jenis_tab' => $jenisTab])
                 ->with('success', 'Barang berhasil dihapus');
         } catch (\Exception $e) {
-            // PERBAIKAN: Ganti route ke admin.stok_barang.index
             return redirect()->route('admin.stok_barang.index')
                 ->with('error', 'Gagal menghapus barang: ' . $e->getMessage());
         }
@@ -196,7 +206,11 @@ class BarangController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.stok_barang.index')
+            // PERBAIKAN: Ambil jenis tab dari kategori
+            $kategori = Kategori::find($barang->kategori_id);
+            $jenisTab = $kategori ? $kategori->jenis : 'medis';
+
+            return redirect()->route('admin.stok_barang.index', ['jenis_tab' => $jenisTab])
                 ->with('success', 'Batch berhasil ditambahkan');
 
         } catch (\Exception $e) {

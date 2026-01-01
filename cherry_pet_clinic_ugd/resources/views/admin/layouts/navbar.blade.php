@@ -1,5 +1,8 @@
 <nav class="navbar">
     <div class="navbar-left">
+        <div class="navbar-logo">
+            <img src="{{ asset('asset/logo.png') }}" alt="Cherry Pet Clinic Logo">
+        </div>
         <h1>{{ $title ?? 'Sistem Manajemen Inventori Klinik Hewan' }}</h1>
     </div>
 
@@ -70,10 +73,37 @@
         z-index: 100;
     }
 
+    .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .navbar-logo {
+        width: 45px;
+        height: 45px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        overflow: hidden;
+    }
+
+    .navbar-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 50%;
+    }
+
     .navbar-left h1 {
         font-size: 18px;
         color: #1A1A1A;
         font-weight: 600;
+        margin: 0;
     }
 
     .navbar-right {
@@ -197,5 +227,25 @@
 
     .dropdown-logout:hover {
         background: #FFEBEE;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 0 15px;
+        }
+
+        .navbar-logo {
+            width: 35px;
+            height: 35px;
+        }
+
+        .navbar-left h1 {
+            font-size: 14px;
+        }
+
+        .user-info {
+            display: none;
+        }
     }
 </style>
