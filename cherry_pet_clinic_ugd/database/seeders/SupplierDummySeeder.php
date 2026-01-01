@@ -67,7 +67,7 @@ class SupplierDummySeeder extends Seeder
                 'nib' => '1276189024571',
                 'jenis_barang_id' => $obatHewan->id,
                 'alamat' => 'Jl. Kesehatan No.1, Jakarta',
-                'kontak' => '081329891201',
+                'kontak' => '0882007612609',
                 'status' => 'aktif',
             ],
             [

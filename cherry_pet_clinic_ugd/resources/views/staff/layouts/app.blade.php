@@ -26,12 +26,7 @@
     <div class="sidebar" id="sidebar">
         <div class="logo-section">
             <div class="logo-circle">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C10.3431 2 9 3.34315 9 5C9 6.65685 10.3431 8 12 8C13.6569 8 15 6.65685 15 5C15 3.34315 13.6569 2 12 2Z" fill="#E31E24"/>
-                    <path d="M7 9C5.34315 9 4 10.3431 4 12C4 13.6569 5.34315 15 7 15C8.65685 15 10 13.6569 10 12C10 10.3431 8.65685 9 7 9Z" fill="#E31E24"/>
-                    <path d="M14 12C14 10.3431 15.3431 9 17 9C18.6569 9 20 10.3431 20 12C20 13.6569 18.6569 15 17 15C15.3431 15 14 13.6569 14 12Z" fill="#E31E24"/>
-                    <path d="M9 19C9 17.3431 10.3431 16 12 16C13.6569 16 15 17.3431 15 19C15 20.6569 13.6569 22 12 22C10.3431 22 9 20.6569 9 19Z" fill="#E31E24"/>
-                </svg>
+                <img src="{{ asset('asset/logo.png') }}" alt="Cherry Pet Clinic Logo" class="logo-img">
             </div>
             <div class="logo-text">
                 <h3>Cherry Pet Clinic</h3>
@@ -197,6 +192,15 @@
             justify-content: center;
             margin: 0 auto 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
         }
 
         .logo-circle svg {

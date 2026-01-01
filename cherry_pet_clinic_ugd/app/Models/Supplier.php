@@ -19,6 +19,11 @@ class Supplier extends Model
         'status'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function jenisBarang()
     {
         return $this->belongsTo(JenisBarang::class, 'jenis_barang_id');
@@ -33,8 +38,4 @@ class Supplier extends Model
     {
         return $query->where('status', 'aktif');
     }
-    public function pengadaans()
-{
-    return $this->hasMany(Pengadaan::class, 'supplier_id');
-}
 }

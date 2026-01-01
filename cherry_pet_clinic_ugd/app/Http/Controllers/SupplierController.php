@@ -4,10 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use App\Models\JenisBarang;
+use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SupplierController extends Controller
 {
+    protected $whatsappService;
+
+    public function __construct(WhatsAppService $whatsappService)
+    {
+        $this->whatsappService = $whatsappService;
+    }
+
     public function index(Request $request)
     {
         $query = Supplier::with(['jenisBarang.kategori']);
@@ -33,15 +42,14 @@ class SupplierController extends Controller
     }
 
     public function create()
-{
-    // Ambil jenis barang dengan relasi kategori, diurutkan berdasarkan kategori dan nama
-    $jenisBarangs = JenisBarang::with('kategori')
-        ->orderBy('kategori_id')
-        ->orderBy('nama_jenis')
-        ->get();
+    {
+        $jenisBarangs = JenisBarang::with('kategori')
+            ->orderBy('kategori_id')
+            ->orderBy('nama_jenis')
+            ->get();
 
-    return view('admin.suppliers.create', compact('jenisBarangs'));
-}
+        return view('admin.suppliers.create', compact('jenisBarangs'));
+    }
 
     public function store(Request $request)
     {
@@ -94,5 +102,68 @@ class SupplierController extends Controller
         $supplier->delete();
         return redirect()->route('admin.suppliers.index')
             ->with('success', 'Supplier berhasil dihapus');
+    }
+
+
+    public function sendWhatsApp(Request $request, $id)
+    {
+        $request->validate([
+            'template_type' => 'required|in:info,order,payment,reminder'
+        ]);
+
+        try {
+            $supplier = Supplier::with(['jenisBarang.kategori'])->findOrFail($id);
+
+            $result = $this->whatsappService->sendSupplierNotification(
+                $supplier,
+                $request->template_type
+            );
+
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            Log::error('WhatsApp Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim WhatsApp: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Kirim WhatsApp - Custom Message
+     */
+    public function sendCustomWhatsApp(Request $request, $id)
+    {
+        $request->validate([
+            'message' => 'required|string|min:10'
+        ]);
+
+        try {
+            $supplier = Supplier::findOrFail($id);
+
+            $result = $this->whatsappService->sendMessage(
+                $supplier->kontak,
+                $request->message
+            );
+
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            Log::error('Custom WhatsApp Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim WhatsApp: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function checkWhatsAppStatus()
+    {
+        $result = $this->whatsappService->checkDevice();
+        return response()->json($result);
     }
 }

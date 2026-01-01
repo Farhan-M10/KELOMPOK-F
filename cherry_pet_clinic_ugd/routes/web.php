@@ -51,9 +51,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Suppliers
-    Route::resource('suppliers', SupplierController::class);
+   // WhatsApp routes HARUS DI ATAS
+    Route::post('suppliers/{id}/whatsapp/send', [SupplierController::class, 'sendWhatsApp']);
+    Route::post('suppliers/{id}/whatsapp/custom', [SupplierController::class, 'sendCustomWhatsApp']);
 
+    // Resource routes di bawah
+    Route::resource('suppliers', SupplierController::class);
     // Kategori
     Route::resource('kategori', KategoriController::class);
 
